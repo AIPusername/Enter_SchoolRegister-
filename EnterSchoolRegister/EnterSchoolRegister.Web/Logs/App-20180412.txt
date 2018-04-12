@@ -199,30 +199,3 @@ Non è stato possibile creare il vincolo o l'indice. Vedere gli errori precedent
    at EnterSchoolRegister.Web.Program.BuildWebHost(String[] args) in C:\Users\Vincenzo Parrilla\Desktop\Convidisi HDD-SSD\Università\Advanced Internet Programming\Enter_SchoolRegister-\EnterSchoolRegister\EnterSchoolRegister.Web\Program.cs:line 21
 ClientConnectionId:9731fea5-57ae-4204-8587-35578b7d8871
 Error Number:1785,State:0,Class:16
-2018-04-12T21:16:28.6532757+02:00  [FTL] Application startup exception (6c57a5ba)
-System.Data.SqlClient.SqlException (0x80131904): L'introduzione del vincolo FOREIGN KEY 'FK_StudentsCoursesGrades_Students_StudentSerialNumber' nella tabella 'StudentsCoursesGrades' può determinare la creazione di cicli o più percorsi di propagazione. Specificare ON DELETE NO ACTION o ON UPDATE NO ACTION oppure modificare gli altri vincoli FOREIGN KEY.
-Non è stato possibile creare il vincolo o l'indice. Vedere gli errori precedenti.
-   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
-   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
-   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
-   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite, String methodName)
-   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
-   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
-   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
-   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
-   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
-   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
-   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
-   at EnterSchoolRegister.Web.Startup.Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Vincenzo Parrilla\Desktop\Convidisi HDD-SSD\Università\Advanced Internet Programming\Enter_SchoolRegister-\EnterSchoolRegister\EnterSchoolRegister.Web\Startup.cs:line 165
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.Configure(IApplicationBuilder app)
-   at Microsoft.ApplicationInsights.AspNetCore.ApplicationInsightsStartupFilter.<>c__DisplayClass0_0.<Configure>b__0(IApplicationBuilder app)
-   at Microsoft.AspNetCore.Hosting.Internal.AutoRequestServicesStartupFilter.<>c__DisplayClass0_0.<Configure>b__0(IApplicationBuilder builder)
-   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
-   at Microsoft.AspNetCore.Hosting.WebHostBuilder.Build()
-   at EnterSchoolRegister.Web.Program.BuildWebHost(String[] args) in C:\Users\Vincenzo Parrilla\Desktop\Convidisi HDD-SSD\Università\Advanced Internet Programming\Enter_SchoolRegister-\EnterSchoolRegister\EnterSchoolRegister.Web\Program.cs:line 21
-ClientConnectionId:bda4045e-a9d4-45b2-b98e-124f6b1a573c
-Error Number:1785,State:0,Class:16
