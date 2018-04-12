@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace EnterSchoolRegister.BLL.Entities
 {
     public class Course
     {
+        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -20,6 +22,10 @@ namespace EnterSchoolRegister.BLL.Entities
         public string Description { get; set; }
 
         [ForeignKey("User")]
-        public int? TeacherId { get; }
+        public int TeacherId { get; set; }
+
+        public User Teacher { get; set; }
+
+        public ICollection<Grade> Grades { get; set; }
     }
 }

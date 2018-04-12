@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace EnterSchoolRegister.BLL.Entities
 {
     public class Role : IdentityRole<int>
     {
-        public Role()
-        { }
+        public Role() { }
         public Role(string name) : base(name) { }
 
-        public ICollection<UserRole> UserRole { get; set; }
+        public ICollection<UserRole> UsersRoles { get; set; }
     }
 }

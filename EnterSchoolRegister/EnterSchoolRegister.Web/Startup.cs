@@ -62,7 +62,7 @@ namespace EnterSchoolRegister.Web
                 options.Cookie.HttpOnly = true;
             });
 
-            services.AddDbContext<ApplicationDbContext<User, Role, int>>(options =>
+            services.AddDbContext<DbContext<User, Role, int>>(options =>
             {
                 options.UseSqlServer(_connectionString);  // SQL SERVER
                                                           // options.UseMySql(_connectionString); // My SQL
@@ -76,7 +76,7 @@ namespace EnterSchoolRegister.Web
                 o.Password.RequireNonAlphanumeric = false;
                 o.User.RequireUniqueEmail = false;
 
-            }).AddEntityFrameworkStores<ApplicationDbContext<User, Role, int>>()
+            }).AddEntityFrameworkStores<DbContext<User, Role, int>>()
               .AddDefaultTokenProviders();
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -124,8 +124,8 @@ namespace EnterSchoolRegister.Web
             var cs = new ConnectionStringDto() { ConnectionString = _connectionString };
             services.AddSingleton(cs);
 
-            services.AddScoped<DbContext, ApplicationDbContext<User, Role, int>>();
-            services.AddScoped<DbContextOptions<ApplicationDbContext<User, Role, int>>>();
+            services.AddScoped<DbContext, DbContext<User, Role, int>>();
+            services.AddScoped<DbContextOptions<DbContext<User, Role, int>>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IEmailSender, EmailSender>();
             var mappingConfig = new AutoMapper.MapperConfiguration(cfg =>

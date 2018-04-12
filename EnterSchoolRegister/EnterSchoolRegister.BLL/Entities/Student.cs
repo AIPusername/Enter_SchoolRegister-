@@ -16,8 +16,10 @@ namespace EnterSchoolRegister.BLL.Entities
         public string LastName { get; set; }
 
         [ForeignKey("Parent")]
-        public int? ParentId { get; }
+        public int ParentId { get; set; }
 
         public User Parent { get; set; }
+
+        public ICollection<Grade> Grades { get; set; }
     }
 }
