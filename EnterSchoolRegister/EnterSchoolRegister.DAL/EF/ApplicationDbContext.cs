@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using EnterSchoolRegister.BLL.Entities;
 
 namespace EnterSchoolRegister.DAL.EF
 {
@@ -14,7 +15,7 @@ namespace EnterSchoolRegister.DAL.EF
 
         // Table properties e.g
         // public virtual DbSet<Entity> TableName { get; set; }
-
+        public virtual DbSet<Course>  Courses { get; set; }
 
         public ApplicationDbContext(ConnectionStringDto connectionStringDto)
         {
@@ -31,6 +32,7 @@ namespace EnterSchoolRegister.DAL.EF
         {
             base.OnModelCreating(modelBuilder);
             // Fluent API commands
+            //modelBuilder.Entity<Student>().HasOptional(b => b.User).WithMany().HasForeignKey(b => b.TeacherId);
         }
     }
 }

@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace EnterSchoolRegister.BLL.Entities
 {
-    class Student
+    public class Student
     {
+        [Key]
         public int SerialNumber { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public int ParentId { get; set; } //how to create a foreign key?
+        [ForeignKey("Parent")]
+        public int? ParentId { get; }
+
+        public User Parent { get; set; }
     }
 }

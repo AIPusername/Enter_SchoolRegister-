@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace EnterSchoolRegister.BLL.Entities
@@ -18,6 +19,7 @@ namespace EnterSchoolRegister.BLL.Entities
 
         public string Description { get; set; }
 
-        public int TeacherId { get; set; } //how to create a foreign key?
+        [ForeignKey("User")]
+        public int? TeacherId { get; }
     }
 }
