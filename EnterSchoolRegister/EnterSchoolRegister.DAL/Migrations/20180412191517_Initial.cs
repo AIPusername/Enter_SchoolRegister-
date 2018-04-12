@@ -202,42 +202,18 @@ namespace EnterSchoolRegister.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersRoles",
-                columns: table => new
-                {
-                    RoleId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsersRoles", x => new { x.RoleId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UsersRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UsersRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StudentsCoursesGrades",
                 columns: table => new
                 {
                     CourseId = table.Column<int>(nullable: false),
                     StudentSerialNumber = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
                     Mark = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentsCoursesGrades", x => new { x.CourseId, x.StudentSerialNumber });
+                    table.PrimaryKey("PK_StudentsCoursesGrades", x => new { x.CourseId, x.StudentSerialNumber, x.Date });
                     table.ForeignKey(
                         name: "FK_StudentsCoursesGrades_Courses_CourseId",
                         column: x => x.CourseId,
@@ -305,11 +281,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                 name: "IX_StudentsCoursesGrades_StudentSerialNumber",
                 table: "StudentsCoursesGrades",
                 column: "StudentSerialNumber");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersRoles_UserId",
-                table: "UsersRoles",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -333,16 +304,13 @@ namespace EnterSchoolRegister.DAL.Migrations
                 name: "StudentsCoursesGrades");
 
             migrationBuilder.DropTable(
-                name: "UsersRoles");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -12,7 +12,7 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180412164433_Initial")]
+    [Migration("20180412191517_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,13 +52,13 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.Property<int>("StudentSerialNumber");
 
-                    b.Property<string>("Comment");
-
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("Comment");
 
                     b.Property<float>("Mark");
 
-                    b.HasKey("CourseId", "StudentSerialNumber");
+                    b.HasKey("CourseId", "StudentSerialNumber", "Date");
 
                     b.HasIndex("StudentSerialNumber");
 
@@ -156,19 +156,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.UserRole", b =>
-                {
-                    b.Property<int>("RoleId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -278,19 +265,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.HasOne("EnterSchoolRegister.BLL.Entities.User", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.UserRole", b =>
-                {
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.Role", "Role")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.User", "User")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
