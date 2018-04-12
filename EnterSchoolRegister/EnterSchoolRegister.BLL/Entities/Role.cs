@@ -7,7 +7,5 @@ namespace EnterSchoolRegister.BLL.Entities
     {
         public Role() { }
         public Role(string name) : base(name) { }
-
-        public ICollection<UserRole> UsersRoles { get; set; }
     }
 }
