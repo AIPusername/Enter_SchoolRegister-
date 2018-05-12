@@ -11,15 +11,18 @@ namespace EnterSchoolRegister.BLL.Entities
         [Key]
         public int SerialNumber { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
 
+        [Required]
         public string LastName { get; set; }
 
+        [Required]
         [ForeignKey("Parent")]
         public int ParentId { get; set; }
 
         public User Parent { get; set; }
 
-        public ICollection<Grade> Grades { get; set; }
+        public ICollection<CourseStudent> CourseStudent { get; set; }
     }
 }

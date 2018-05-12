@@ -17,7 +17,8 @@ namespace EnterSchoolRegister.DAL.EF
         // public virtual DbSet<Entity> TableName { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<Grade> StudentsCoursesGrades { get; set; }
+        public virtual DbSet<CourseStudent> CourseStudents { get; set; }
+        public virtual DbSet<Grade> Grades { get; set; }
 
         public DbContext(ConnectionStringDto connectionStringDto)
         {
@@ -34,19 +35,33 @@ namespace EnterSchoolRegister.DAL.EF
             base.OnModelCreating(modelBuilder);
             // Fluent API commands
 
-            //StudentCourse primary and foreign keys
+            //CourseStudent primary and foreign keys
+            modelBuilder.Entity<CourseStudent>()
+                .HasKey(cs => new { cs.CourseId, cs.StudentSerialNumber });
+
+            modelBuilder.Entity<CourseStudent>()
+                .HasOne(cs => cs.Course)
+                .WithMany(c => c.CourseStudent)
+                .HasForeignKey(cs => cs.CourseId);
+
+            modelBuilder.Entity<CourseStudent>()
+                .HasOne(cs => cs.Student)
+                .WithMany(s => s.CourseStudent)
+                .HasForeignKey(cs => cs.StudentSerialNumber);
+
+            //Grade keys
             modelBuilder.Entity<Grade>()
-                .HasKey(gr => new { gr.CourseId, gr.StudentSerialNumber, gr.Date });
+                .HasKey(g => new { g.CourseId, g.StudentSerialNumber, g.Date });
 
             modelBuilder.Entity<Grade>()
-                .HasOne(gr => gr.Course)
-                .WithMany(g => g.Grades)
-                .HasForeignKey(gr => gr.CourseId);
+                .HasOne(g => g.CourseStudent)
+                .WithMany(cs => cs.Grades)
+                .HasForeignKey(g => g.CourseId);
 
             modelBuilder.Entity<Grade>()
-                .HasOne(gr => gr.Student)
-                .WithMany(g => g.Grades)
-                .HasForeignKey(gr => gr.StudentSerialNumber);
+                .HasOne(g => g.CourseStudent)
+                .WithMany(cs => cs.Grades)
+                .HasForeignKey(g => g.StudentSerialNumber);
         }
     }
 }

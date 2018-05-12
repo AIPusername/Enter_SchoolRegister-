@@ -6,24 +6,20 @@ using System.Text;
 
 namespace EnterSchoolRegister.BLL.Entities
 {
-    public class Grade
+    public class CourseStudent
     {
         [Required]
-        public float Mark { get; set; }
-
-        [Required]
-        public DateTime Date { get; set; }
-
-        public string Comment { get; set; }
-
-        [Required]
-        [ForeignKey("CourseStudent")]
+        [ForeignKey("Course")]
         public int CourseId { get; set; }
 
+        public Course Course { get; set; }
+
         [Required]
-        [ForeignKey("CourseStudent")]
+        [ForeignKey("Student")]
         public int StudentSerialNumber { get; set; }
 
-        public CourseStudent CourseStudent { get; set; }
+        public Student Student { get; set; }
+
+        public ICollection<Grade> Grades { get; set; }
     }
 }
