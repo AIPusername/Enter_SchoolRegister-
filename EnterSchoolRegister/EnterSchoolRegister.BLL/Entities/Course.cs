@@ -30,5 +30,6 @@ namespace EnterSchoolRegister.BLL.Entities
         public User Teacher { get; set; }
 
         public ICollection<CourseStudent> CourseStudent { get; set; }
+        public ICollection<Grade> Grades { get; set; }
     }
 }

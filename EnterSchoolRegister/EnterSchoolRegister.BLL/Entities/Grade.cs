@@ -17,13 +17,15 @@ namespace EnterSchoolRegister.BLL.Entities
         public string Comment { get; set; }
 
         [Required]
-        [ForeignKey("CourseStudent")]
+        [ForeignKey("Course")]
         public int CourseId { get; set; }
 
+        public Course Course { get; set; }
+
         [Required]
-        [ForeignKey("CourseStudent")]
+        [ForeignKey("Student")]
         public int StudentSerialNumber { get; set; }
 
-        public CourseStudent CourseStudent { get; set; }
+        public Student Student { get; set; }
     }
 }
