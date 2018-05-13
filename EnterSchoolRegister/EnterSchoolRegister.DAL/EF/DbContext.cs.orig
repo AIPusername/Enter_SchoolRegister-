@@ -15,12 +15,15 @@ namespace EnterSchoolRegister.DAL.EF
 
         // Table properties e.g
         // public virtual DbSet<Entity> TableName { get; set; }
+<<<<<<< HEAD
+=======
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<CourseStudent> CourseStudents { get; set; }
-        public virtual DbSet<Grade> Grades { get; set; }
+        public virtual DbSet<Grade> StudentsCoursesGrades { get; set; }
+>>>>>>> BLL and DAL completed
 
-        public DbContext(ConnectionStringDto connectionStringDto)
+
+        public ApplicationDbContext(ConnectionStringDto connectionStringDto)
         {
             _connectionStringDto = connectionStringDto;
         }
@@ -28,40 +31,30 @@ namespace EnterSchoolRegister.DAL.EF
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(_connectionStringDto.ConnectionString); // for provider SQL Server 
+            // optionsBuilder.UseMySql(_connectionStringDto.ConnectionString); //for provider My SQL 
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             // Fluent API commands
+<<<<<<< HEAD
+=======
 
-            //CourseStudent primary and foreign keys
-            modelBuilder.Entity<CourseStudent>()
-                .HasKey(cs => new { cs.CourseId, cs.StudentSerialNumber });
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Course)
-                .WithMany(c => c.CourseStudent)
-                .HasForeignKey(cs => cs.CourseId);
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Student)
-                .WithMany(s => s.CourseStudent)
-                .HasForeignKey(cs => cs.StudentSerialNumber);
-
-            //Grade keys
+            //StudentCourse primary and foreign keys
             modelBuilder.Entity<Grade>()
-                .HasKey(g => new { g.CourseId, g.StudentSerialNumber, g.Date });
+                .HasKey(gr => new { gr.CourseId, gr.StudentSerialNumber, gr.Date });
 
             modelBuilder.Entity<Grade>()
-                .HasOne(g => g.Course)
-                .WithMany(c => c.Grades)
-                .HasForeignKey(g => g.CourseId);
+                .HasOne(gr => gr.Course)
+                .WithMany(g => g.Grades)
+                .HasForeignKey(gr => gr.CourseId);
 
             modelBuilder.Entity<Grade>()
-                .HasOne(g => g.Student)
-                .WithMany(s => s.Grades)
-                .HasForeignKey(g => g.StudentSerialNumber);
+                .HasOne(gr => gr.Student)
+                .WithMany(g => g.Grades)
+                .HasForeignKey(gr => gr.StudentSerialNumber);
+>>>>>>> BLL and DAL completed
         }
     }
 }

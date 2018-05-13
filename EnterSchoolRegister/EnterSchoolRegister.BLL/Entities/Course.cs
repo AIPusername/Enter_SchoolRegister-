@@ -11,8 +11,10 @@ namespace EnterSchoolRegister.BLL.Entities
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public int NumberOfECTS { get; set; }
 
         public int LecturesHours { get; set; }
@@ -21,11 +23,13 @@ namespace EnterSchoolRegister.BLL.Entities
 
         public string Description { get; set; }
 
+        [Required]
         [ForeignKey("User")]
         public int TeacherId { get; set; }
 
         public User Teacher { get; set; }
 
+        public ICollection<CourseStudent> CourseStudent { get; set; }
         public ICollection<Grade> Grades { get; set; }
     }
 }

@@ -32,7 +32,8 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.Property<int>("LecturesHours");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("NumberOfECTS");
 
@@ -45,23 +46,36 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
+                {
+                    b.Property<int>("CourseId");
+
+                    b.Property<int>("StudentSerialNumber");
+
+                    b.HasKey("CourseId", "StudentSerialNumber");
+
+                    b.HasIndex("StudentSerialNumber");
+
+                    b.ToTable("CourseStudents");
+                });
+
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
                 {
                     b.Property<int>("CourseId");
 
                     b.Property<int>("StudentSerialNumber");
 
-                    b.Property<string>("Comment");
-
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("Comment");
 
                     b.Property<float>("Mark");
 
-                    b.HasKey("CourseId", "StudentSerialNumber");
+                    b.HasKey("CourseId", "StudentSerialNumber", "Date");
 
                     b.HasIndex("StudentSerialNumber");
 
-                    b.ToTable("StudentsCoursesGrades");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Role", b =>
@@ -93,9 +107,11 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<int>("SerialNumber")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<int>("ParentId");
 
@@ -155,19 +171,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.UserRole", b =>
-                {
-                    b.Property<int>("RoleId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -259,6 +262,19 @@ namespace EnterSchoolRegister.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
+                {
+                    b.HasOne("EnterSchoolRegister.BLL.Entities.Course", "Course")
+                        .WithMany("CourseStudent")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EnterSchoolRegister.BLL.Entities.Student", "Student")
+                        .WithMany("CourseStudent")
+                        .HasForeignKey("StudentSerialNumber")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
                 {
                     b.HasOne("EnterSchoolRegister.BLL.Entities.Course", "Course")
@@ -277,19 +293,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.HasOne("EnterSchoolRegister.BLL.Entities.User", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.UserRole", b =>
-                {
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.Role", "Role")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.User", "User")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
