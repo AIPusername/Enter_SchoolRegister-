@@ -18,7 +18,7 @@ namespace EnterSchoolRegister.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
+                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Course", b =>
@@ -152,6 +152,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("Role");
 
                     b.Property<string>("SecurityStamp");
 

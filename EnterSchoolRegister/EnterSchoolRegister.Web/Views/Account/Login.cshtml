@@ -30,18 +30,6 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <fieldset>
-                        <label asp-for="Teacher">
-                            <input type="radio" name="radio-1" id="radio-teacher">
-                            @Html.DisplayNameFor(t => t.Teacher)
-                        </label>
-                        <label asp-for="Parent">
-                            <input type="radio" name="radio-1" id="radio-parent">
-                            @Html.DisplayNameFor(t => t.Parent)
-                        </label>
-                    </fieldset>
-                </div>
-                <div class="form-group">
                     <div class="checkbox">
                         <label asp-for="RememberMe">
                             <input asp-for="RememberMe" />

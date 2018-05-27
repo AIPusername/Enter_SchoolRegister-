@@ -6,5 +6,6 @@ namespace EnterSchoolRegister.BLL.Entities
 {
     public class User : IdentityUser<int>
     {
+        public bool Role { get; set; }
     }
 }

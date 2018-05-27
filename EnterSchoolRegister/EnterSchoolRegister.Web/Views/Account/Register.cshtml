@@ -26,6 +26,16 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <p>If you are a teacher, please check this checkbox. Otherwise you will be registered
+                   as a Parent.</p>
+                <div class="checkbox">
+                    <label asp-for="Role">
+                        <input asp-for="Role" />
+                        @Html.DisplayNameFor(r => r.Role)
+                    </label>
+                </div>
+            </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
