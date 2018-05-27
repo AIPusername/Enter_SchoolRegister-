@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DataAccessLayer.Core.EntityFramework" Version="1.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" />
+    <PackageReference Include="DataAccessLayer.Core.EntityFramework" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
