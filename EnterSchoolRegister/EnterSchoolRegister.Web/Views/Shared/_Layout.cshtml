@@ -4,6 +4,10 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+    ViewData["Object"] = "Advanced Internet Programming Project";
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,9 +36,9 @@
                 <ul class="nav navbar-nav">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        @if (UserManager.FindByNameAsync(User.Identity.Name).Result.Role == true) 
+                        if (UserManager.FindByNameAsync(User.Identity.Name).Result.Role == true)
                         {
-                            <li><a asp-area="" asp-controller="" asp-action="">Courses</a></li>
+                            <li><a asp-area="" asp-controller="Course" asp-action="CoursesMain">Courses</a></li>
                             <li><a asp-area="" asp-controller="" asp-action="">Manage students</a></li>
                             <li><a asp-area="" asp-controller="" asp-action="">Grade a student</a></li>
                         }
@@ -52,11 +56,14 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+    </div>
+    <div class="container body-content">
         <footer>
-            <p>&copy; 2018 - Setup Solution</p>
+            <hr />
+            <p>&copy; 2018 - @ViewData["Object"]</p>
         </footer>
     </div>
+
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

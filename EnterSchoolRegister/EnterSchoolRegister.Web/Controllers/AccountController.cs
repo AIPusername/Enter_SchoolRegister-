@@ -58,7 +58,8 @@ namespace EnterSchoolRegister.Web.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var userName = model.Email.Split('@')[0];
+                var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     Logger.LogInformation("User logged in.");
@@ -217,7 +218,8 @@ namespace EnterSchoolRegister.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email, Role = model.Role};
+                string userName = model.Email.Split('@')[0];
+                var user = new User { UserName = userName, Email = model.Email, Role = model.Role};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

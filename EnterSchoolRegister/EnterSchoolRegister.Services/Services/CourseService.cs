@@ -2,10 +2,13 @@
 using DataAccessLayer.Core.Interfaces.UoW;
 using EnterSchoolRegister.BLL.Entities;
 using EnterSchoolRegister.Services.Interfaces;
+using EnterSchoolRegister.ViewModels.EntitiesViewModels;
 using EnterSchoolRegister.ViewModels.ServicesViewModels;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace EnterSchoolRegister.Services.Services
@@ -14,6 +17,14 @@ namespace EnterSchoolRegister.Services.Services
     {
         public CourseService(IUnitOfWork uow, ILoggerFactory loggerFactory) : base(uow, loggerFactory)
         {
+        }
+
+        public IEnumerable<CourseVm> GetCourses(Expression<Func<Course, bool>> filterPredicate = null)
+        {
+            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(filterPredicate: filterPredicate,
+                orderByPredicate: x => x.OrderByDescending(c => c.Name), enableTracking: false);
+            IEnumerable<CourseVm> coursesVm = AutoMapper.Mapper.Map<IEnumerable<CourseVm>>(courses);
+            return coursesVm;
         }
 
         public void AddCourse(AddCourseVm addCourseVm)

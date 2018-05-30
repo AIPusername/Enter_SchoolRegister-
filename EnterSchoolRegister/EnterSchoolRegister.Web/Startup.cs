@@ -128,6 +128,8 @@ namespace EnterSchoolRegister.Web
             services.AddScoped<DbContextOptions<DbContext<User, Role, int>>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IManageStudentService, ManageStudentService>();
             var mappingConfig = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.Mapping(services.BuildServiceProvider().GetService<UserManager<User>>());

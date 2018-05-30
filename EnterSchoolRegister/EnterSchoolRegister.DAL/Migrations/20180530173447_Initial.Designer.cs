@@ -12,7 +12,7 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180527150424_Initial")]
+    [Migration("20180530173447_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,7 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("Role");
+                    b.Property<bool>("Role");
 
                     b.Property<string>("SecurityStamp");
 

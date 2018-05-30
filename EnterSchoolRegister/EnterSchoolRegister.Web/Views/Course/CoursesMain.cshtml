@@ -1,0 +1,31 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+@model IEnumerable<CourseVm>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div id="course-section">
+    <div class="main c-container">
+        @foreach (var course in Model)
+        {
+            @Html.PartialAsync("_CoursePartial", course)
+        }
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae diam egestas,
+            lacinia odio at, lacinia nisl. Proin ut nulla posuere, auctor nunc eget, fermentum metus.
+            Maecenas ultrices enim ultricies tristique consequat. Quisque ullamcorper bibendum nisl,
+            eget laoreet mauris dignissim id. Integer pulvinar lacus leo, a feugiat velit porttitor sit
+            amet. Donec sollicitudin sem sit amet velit egestas, eu finibus est maximus. Vestibulum
+            vel diam nec enim cursus blandit. Nunc eget volutpat erat.
+        </p>
+    </div>
+    <!--Da completare-->
+    <div class="main op-container">
+        <!--btn-outline-dark is a class from bootstrap 4.1.0, find a way to implement it and update also jquery-->
+        <button id="show-addCourseForm" type="button" class="btn btn-outline-dark">Add new course</button>
+    </div>
+</div>
+
