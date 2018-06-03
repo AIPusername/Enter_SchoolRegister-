@@ -4,31 +4,35 @@
 @model EnterSchoolRegister.ViewModels.EntitiesViewModels.CourseVm
 @inject UserManager<User> UserManager
 
-<div class="course-box" style="margin-bottom: 20px">
-    <h4>@Html.DisplayFor(model => model.Name)</h4>
+@{ 
+    ViewData["Name"] = Model.Name;
+}
+
+<div class="course-box" style="margin-top: 40px; margin-bottom:40px">
+    <h3>@ViewData["Name"]</h3>
     <table class="table table-striped">
         <thead style="text-align: center;">
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Id)</th>
-                <th>@Html.DisplayNameFor(model => model.NumberOfECTS)</th>
-                <th>@Html.DisplayNameFor(model => model.LecturesHours)</th>
-                <th>@Html.DisplayNameFor(model => model.LaboratoriesHours)</th>
+                <th>@Html.DisplayNameFor(c => c.Id)</th>
+                <th>@Html.DisplayNameFor(c => c.NumberOfECTS)</th>
+                <th>@Html.DisplayNameFor(c => c.LecturesHours)</th>
+                <th>@Html.DisplayNameFor(c => c.LaboratoriesHours)</th>
             </tr>
         </thead>
         <tbody style="text-align: center;">
             <tr>
-                <td>@Html.DisplayFor(model => model.Id)</td>
-                <td>@Html.DisplayFor(model => model.NumberOfECTS)</td>
-                <td>@Html.DisplayFor(model => model.LecturesHours)</td>
-                <td>@Html.DisplayFor(model => model.LaboratoriesHours)</td>
+                <td>@Model.Id</td>
+                <td>@Model.NumberOfECTS</td>
+                <td>@Model.LecturesHours</td>
+                <td>@Model.LaboratoriesHours</td>
             </tr>
         </tbody>
     </table>
+    @{ 
+        string email = UserManager.FindByIdAsync("" + Model.TeacherId).Result.Email;
+    }
+    <h5><b>Teacher's email:</b> @email</h5>
     <br />
-    <h6>Teacher's email: @Html.Display(UserManager.FindByIdAsync("" + Model.TeacherId).Result.UserName)</h6>
-    <br />
-    <h6>@Html.DisplayNameFor(model => model.Description)</h6>
-    <div class="description" style="border: 0.5px solid black;">
-        @Html.DisplayFor(model => model.Description)
-    </div>
+    <label>@Html.DisplayNameFor(c => c.Description)</label>
+    <textarea class="description" readonly>@Model.Description</textarea>
 </div>

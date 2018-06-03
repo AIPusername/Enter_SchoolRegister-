@@ -28,7 +28,8 @@ namespace EnterSchoolRegister.Web.Controllers
 
         public IActionResult CoursesMain()
         {
-            IEnumerable<CourseVm> coursesVm = _courseService.GetCourses();
+            IEnumerable<CourseVm> coursesVm = _courseService.GetCourses(_userManager
+                .FindByNameAsync(HttpContext.User.Identity.Name).Result.Id);
             if (HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest")
                 return PartialView(coursesVm);
             else
@@ -40,13 +41,15 @@ namespace EnterSchoolRegister.Web.Controllers
         {
             var user = _userManager.GetUserAsync(HttpContext.User).Result;
             addCourseVm.TeacherId = user.Id;
-            _courseService.AddCourse(addCourseVm);
-            return Json(new { success = true });
+            bool added = _courseService.AddCourse(addCourseVm);
+            return Json(new { success = added });
         }
 
         [HttpPost]
         public JsonResult RemoveCourse(RemoveCourseVm removeCourseVm)
         {
+            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            removeCourseVm.TeacherId = user.Id;
             _courseService.RemoveCourse(removeCourseVm);
             return Json(new { success = true });
         }

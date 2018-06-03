@@ -1,5 +1,8 @@
 ﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+@using EnterSchoolRegister.BLL.Entities;
+
 @model IEnumerable<CourseVm>
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Courses";
@@ -7,25 +10,103 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<div id="course-section">
-    <div class="main c-container">
-        @foreach (var course in Model)
+<div id="course-section" class="row">
+
+
+    <div class="main c-container col-md-6">
+        @if (Model.Count<CourseVm>() == 0)
         {
-            @Html.PartialAsync("_CoursePartial", course)
+            <p>There are not courses yet.</p>
         }
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae diam egestas,
-            lacinia odio at, lacinia nisl. Proin ut nulla posuere, auctor nunc eget, fermentum metus.
-            Maecenas ultrices enim ultricies tristique consequat. Quisque ullamcorper bibendum nisl,
-            eget laoreet mauris dignissim id. Integer pulvinar lacus leo, a feugiat velit porttitor sit
-            amet. Donec sollicitudin sem sit amet velit egestas, eu finibus est maximus. Vestibulum
-            vel diam nec enim cursus blandit. Nunc eget volutpat erat.
-        </p>
+        else
+        {
+            @foreach (var course in Model)
+            {
+                @Html.Partial("_CoursePartial", course);
+                <hr />
+            }
+        }
     </div>
-    <!--Da completare-->
-    <div class="main op-container">
-        <!--btn-outline-dark is a class from bootstrap 4.1.0, find a way to implement it and update also jquery-->
-        <button id="show-addCourseForm" type="button" class="btn btn-outline-dark">Add new course</button>
+
+    
+    <div class="main op-container col-md-6">
+        
+        <div class="row justify-content-around">
+            <div class="col-md-5">
+                <button id="show-add-course-form" type="button" class="btn btn-outline">Add new course</button>
+            </div>
+            @if (Model.Count<CourseVm>() == 0)
+            {
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-outline" disabled>Remove a course</button>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-5">
+                    <button id="show-remove-course-form" type="button" class="btn btn-outline">Remove a course</button>
+                </div>
+            }
+        </div>
+
+        <div id="add-course-form-container" style="margin-top: 20px">
+            <hr />
+            <form id="addCourseForm">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="Name">Name</label>
+                        <input class="form-control" id="Name" placeholder="Type here the name of the new course." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="NumberOfECTS">Number of ECTS</label>
+                        <input type="number" min="1" class="form-control" id="NumberOfECTS" placeholder="For example 3" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="LecturesHours">Hours of lecture</label>
+                        <input type="number" min="0" class="form-control" id="LecturesHours" placeholder="For example 15" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="LaboratoriesHours">Hours of laboratory</label>
+                        <input type="number" min="0" class="form-control" id="LaboratoriesHours" placeholder="For example 18" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" id="Description" placeholder="Type here the description of the new course."></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <button id="add-course" type="button" class="btn btn-outline-small">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+        <div id="remove-course-form-container" style="margin-top: 20px">
+            <hr />
+            <form id="remove-course-form">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="Name">Select a course to remove</label>
+                        <select class="form-control" id="removeName">
+                            @foreach (var course in Model)
+                            {
+                                <option value="@course.NumberOfECTS">@course.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <button id="remove-course" type="button" class="btn btn-outline-small">Remove</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

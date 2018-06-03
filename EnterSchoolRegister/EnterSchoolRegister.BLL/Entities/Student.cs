@@ -25,5 +25,7 @@ namespace EnterSchoolRegister.BLL.Entities
 
         public ICollection<CourseStudent> CourseStudent { get; set; }
         public ICollection<Grade> Grades { get; set; }
+
+        public bool Active { get; set; }
     }
 }

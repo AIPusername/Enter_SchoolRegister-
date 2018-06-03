@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using EnterSchoolRegister.BLL.Entities;
 using EnterSchoolRegister.ViewModels;
+using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+using EnterSchoolRegister.ViewModels.ServicesViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace EnterSchoolRegister.Web.Configuration
@@ -16,6 +18,21 @@ namespace EnterSchoolRegister.Web.Configuration
                     .ForMember(dest => dest.Roles, member => member.MapFrom(src =>
                          userManager.GetRolesAsync(src).Result
                     ));
+
+                // Basic
+                cfg.CreateMap<Course, CourseVm>();
+                cfg.CreateMap<Student, StudentVm>();
+                cfg.CreateMap<Grade, GradeVm>();
+
+                //Services maps
+                cfg.CreateMap<AddCourseVm, Course>();
+                cfg.CreateMap<RemoveCourseVm, Course>();
+
+                cfg.CreateMap<AddStudentVm, Student>();
+                cfg.CreateMap<RemoveStudentVm, Student>();
+
+                cfg.CreateMap<GradingVm, Grade>();
+                cfg.CreateMap<RemoveGradeVm, Grade>();
             });
             return configurationExpression;
         }

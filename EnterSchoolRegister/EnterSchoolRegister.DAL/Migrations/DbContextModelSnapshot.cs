@@ -26,6 +26,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Description");
 
                     b.Property<int>("LaboratoriesHours");
@@ -52,6 +54,8 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.Property<int>("StudentSerialNumber");
 
+                    b.Property<bool>("Active");
+
                     b.HasKey("CourseId", "StudentSerialNumber");
 
                     b.HasIndex("StudentSerialNumber");
@@ -66,6 +70,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<int>("StudentSerialNumber");
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("Comment");
 
@@ -106,6 +112,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     b.Property<int>("SerialNumber")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("FirstName")
                         .IsRequired();

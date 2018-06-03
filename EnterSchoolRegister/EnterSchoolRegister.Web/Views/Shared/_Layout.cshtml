@@ -38,6 +38,7 @@
                     {
                         if (UserManager.FindByNameAsync(User.Identity.Name).Result.Role == true)
                         {
+                            //Complete other controllers
                             <li><a asp-area="" asp-controller="Course" asp-action="CoursesMain">Courses</a></li>
                             <li><a asp-area="" asp-controller="" asp-action="">Manage students</a></li>
                             <li><a asp-area="" asp-controller="" asp-action="">Grade a student</a></li>

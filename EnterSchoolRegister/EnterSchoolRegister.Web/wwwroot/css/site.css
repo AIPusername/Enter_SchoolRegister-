@@ -34,9 +34,35 @@
     }
 }
 
-/*Section for the courses*/
-#course-section .main {
-    width: 570px;
+
+/* Definition of a kind of button */
+.btn-outline {
+    font-size: 20px;
+    color: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.btn-outline-small {
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.btn-outline:hover, .btn-outline-small:hover {
+    color: white;
+    background-color: dimgrey;
+}
+
+.btn-outline:disabled:hover, btn-outline-small:disabled:hover {
+    color: white;
+    background-color: lightgray;
+}
+
+/* Section for the courses */
+.main {
     margin-bottom: 5px;
 }
 
@@ -50,4 +76,13 @@
     border-left: 0.5px solid grey;
     padding-left: 20px;
     float: right;
+}
+
+#Description, .description {
+    height: 100px;
+    resize: none;
+}
+
+.description {
+    width: 550px;
 }

@@ -163,6 +163,7 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     LaboratoriesHours = table.Column<int>(nullable: false),
                     LecturesHours = table.Column<int>(nullable: false),
@@ -187,6 +188,7 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     SerialNumber = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     ParentId = table.Column<int>(nullable: false)
@@ -207,7 +209,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                 columns: table => new
                 {
                     CourseId = table.Column<int>(nullable: false),
-                    StudentSerialNumber = table.Column<int>(nullable: false)
+                    StudentSerialNumber = table.Column<int>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,6 +236,7 @@ namespace EnterSchoolRegister.DAL.Migrations
                     CourseId = table.Column<int>(nullable: false),
                     StudentSerialNumber = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
                     Mark = table.Column<float>(nullable: false)
                 },
