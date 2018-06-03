@@ -219,7 +219,7 @@ namespace EnterSchoolRegister.Web.Controllers
             if (ModelState.IsValid)
             {
                 string userName = model.Email.Split('@')[0];
-                var user = new User { UserName = userName, Email = model.Email, Role = model.Role};
+                var user = new User { UserName = userName, Email = model.Email, Role = model.Role };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
