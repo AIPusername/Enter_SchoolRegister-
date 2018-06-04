@@ -21,19 +21,19 @@ namespace EnterSchoolRegister.Services.Services
 
         public IEnumerable<CourseVm> GetCourses()
         {
-            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active==true, 
-                orderByPredicate: x => x.OrderByDescending(c => c.Name), enableTracking: false);
+            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active, 
+                orderByPredicate: x => x.OrderBy(c => c.Name), enableTracking: false);
             IEnumerable<CourseVm> coursesVm = AutoMapper.Mapper.Map<IEnumerable<CourseVm>>(courses);
-            return coursesVm.Reverse();
+            return coursesVm;
         }
 
         public IEnumerable<CourseVm> GetCourses(int teacherId)
         {
             IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(
-                filterPredicate: c => c.TeacherId == teacherId && c.Active == true, orderByPredicate: x => 
-                x.OrderByDescending(c => c.Name), enableTracking: false);
+                filterPredicate: c => c.TeacherId == teacherId && c.Active, orderByPredicate: x => 
+                x.OrderBy(c => c.Name), enableTracking: false);
             IEnumerable<CourseVm> coursesVm = AutoMapper.Mapper.Map<IEnumerable<CourseVm>>(courses);
-            return coursesVm.Reverse();
+            return coursesVm;
         }
 
         public bool AddCourse(AddCourseVm addCourseVm)

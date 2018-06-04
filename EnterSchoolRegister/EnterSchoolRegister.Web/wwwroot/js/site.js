@@ -1,11 +1,15 @@
 ﻿/* Definition of global variables */ 
 var showHideAddCourse = $("#add-course-form-container");
 var showHideRemoveCourse = $("#remove-course-form-container");
+var showHideAddStudent = $("#add-student-form-container");
+var showHideRemoveStudent = $("#remove-student-form-container");
 
 /* Definition of initial operation on the html pages */
 $(document).ready(function () {
     showHideAddCourse.hide();
     showHideRemoveCourse.hide();
+    showHideAddStudent.hide();
+    showHideRemoveStudent.hide();
 });
 
 /* Assigning to the button its function */
@@ -25,6 +29,24 @@ $("#add-course").on("click", function () {
 
 $("#remove-course").on("click", function () {
     RemoveCourseHandler();
+});
+
+$("#show-add-student-form").on("click", function () {
+    showHideRemoveStudent.hide();
+    showHideAddStudent.toggle(500);
+});
+
+$("#show-remove-student-form").on("click", function () {
+    showHideAddStudent.hide();
+    showHideRemoveStudent.toggle(500);
+});
+
+$("#add-student").on("click", function () {
+    AddStudentHandler();
+});
+
+$("#remove-student").on("click", function () {
+    RemoveStudentHandler();
 });
 
 /* Functions */
@@ -52,10 +74,35 @@ function AddCourseHandler() {
 }
 
 function RemoveCourseHandler() {
-    var select = document.getElementById("removeName");
+    var select = document.getElementById("removeCourseName");
     var name = select.options[select.selectedIndex].text;
     var ects = select.options[select.selectedIndex].value;
 
     $.post("/Course/RemoveCourse", $.param({ Name: name, NumberOfECTS: ects }),
-           function (getResult) { location.reload(true); });
+           function () { location.reload(true); });
+}
+
+function AddStudentHandler() {
+    var last = $("#LastName").val();
+    var first = $("#FirstName").val();
+
+    if (last.trim() === "") { alert("Type a valid last name.") }
+    else if (first.trim() === "") { alert("Type a valid first name.") }
+    else {
+        $.post("/ManageStudent/AddStudent", $.param({ LastName: last, FirstName: first }),
+            function (getResult) {
+                if (getResult.success) { location.reload(true); }
+                else { alert("You have already added this student!") }
+            });
+    }
+}
+
+function RemoveStudentHandler() {
+    var select = document.getElementById("removeStudentName");
+    var completeName = select.options[select.selectedIndex].text.split("-")[1];
+    var last = completeName.split(" ")[1];
+    var first = completeName.split(" ")[2];
+
+    $.post("/ManageStudent/RemoveStudent", $.param({ LastName: last, FirstName: first }),
+        function () { location.reload(true); });
 }

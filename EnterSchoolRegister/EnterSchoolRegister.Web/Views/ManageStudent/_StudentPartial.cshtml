@@ -1,0 +1,15 @@
+﻿@model EnterSchoolRegister.ViewModels.EntitiesViewModels.StudentVm
+
+@{
+    var serialNumberF = "";
+    @if (Model.SerialNumber < 100) { serialNumberF += 0; }
+    @if (Model.SerialNumber < 10) { serialNumberF += 0; }
+    serialNumberF += Model.SerialNumber;
+}
+
+<tr>
+    <td>@serialNumberF</td>
+    <td>@Html.DisplayFor(s => s.LastName)</td>
+    <td>@Html.DisplayFor(s => s.FirstName)</td>
+    <td>@Html.DisplayFor(s => s.ParentId)</td>
+</tr>

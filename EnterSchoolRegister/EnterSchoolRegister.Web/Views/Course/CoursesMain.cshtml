@@ -1,19 +1,17 @@
 ﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
-@using EnterSchoolRegister.BLL.Entities;
 
 @model IEnumerable<CourseVm>
-@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Courses";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 
 <div id="course-section" class="row">
 
 
-    <div class="main c-container col-md-6">
+    <div class="main d-container col-md-6">
         @if (Model.Count<CourseVm>() == 0)
         {
             <p>There are not courses yet.</p>
@@ -91,8 +89,8 @@
             <form id="remove-course-form">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="Name">Select a course to remove</label>
-                        <select class="form-control" id="removeName">
+                        <label for="Name">Select the course which has to be removed</label>
+                        <select class="form-control" id="removeCourseName">
                             @foreach (var course in Model)
                             {
                                 <option value="@course.NumberOfECTS">@course.Name</option>

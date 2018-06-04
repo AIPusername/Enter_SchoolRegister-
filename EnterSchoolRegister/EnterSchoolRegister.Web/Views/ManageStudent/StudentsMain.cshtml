@@ -1,0 +1,110 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels
+
+@model IEnumerable<StudentVm>
+
+@{
+    ViewData["Title"] = "Your students";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="student-section" class="row">
+
+
+    <div class="main d-container col-md-6">
+        <br />
+        @if (Model.Count<StudentVm>() == 0)
+        {
+            <p>You haven't added any student yet.</p>
+        }
+        else
+        {
+            <div>
+                <table id="students" class="table table-striped">
+                    <thead style="text-align:center">
+                        <tr>
+                            <th>Serial number</th><th>Last name</th><th>First name</th><th>Parent id number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            @Html.Partial("_StudentPartial", student);
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+
+    <div class="main op-container col-md-6">
+
+        <div class="row justify-content-around">
+            <div class="col-md-5">
+                <button id="show-add-student-form" type="button" class="btn btn-outline">Add new student</button>
+            </div>
+            @if (Model.Count<StudentVm>() == 0)
+            {
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-outline" disabled>Remove a student</button>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-5">
+                    <button id="show-remove-student-form" type="button" class="btn btn-outline">Remove a student</button>
+                </div>
+            }
+        </div>
+
+        <div id="add-student-form-container" style="margin-top: 20px">
+            <hr />
+            <form id="addStudentForm">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="LastName">Last name</label>
+                        <input class="form-control" id="LastName" placeholder="Type here the last name." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="FirstName">First name</label>
+                        <input class="form-control" id="FirstName" placeholder="Type here the first name." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <button id="add-student" type="button" class="btn btn-outline-small">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="remove-student-form-container" style="margin-top: 20px">
+            <hr />
+            <form id="remove-student-form">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="removeStudentName">Select the student who has to be removed</label>
+                        <select class="form-control" id="removeStudentName">
+                            @foreach (var student in Model)
+                            {
+                                var str = "";
+                                @if(student.SerialNumber < 100) { str += 0; }
+                                @if(student.SerialNumber < 10) { str += 0; }
+                                <option>@str@student.SerialNumber - @student.LastName @student.FirstName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <button id="remove-student" type="button" class="btn btn-outline-small">Remove</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

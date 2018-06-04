@@ -12,7 +12,7 @@ namespace EnterSchoolRegister.Services.Interfaces
         IEnumerable<StudentVm> GetStudents();
         IEnumerable<StudentVm> GetStudentsByParent(int parentId);
         IEnumerable<StudentVm> GetStudentsByCourse(int courseId);
-        void AddStudent(AddStudentVm addStudentVm);
-        void RemoveStudent(RemoveStudentVm removeStudentVm);
+        bool AddStudent(AddRemoveStudentVm model);
+        void RemoveStudent(AddRemoveStudentVm model);
     }
 }

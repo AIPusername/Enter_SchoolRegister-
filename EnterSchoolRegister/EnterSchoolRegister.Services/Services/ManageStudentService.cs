@@ -19,14 +19,12 @@ namespace EnterSchoolRegister.Services.Services
         {
         }
 
-        public void AddStudent(AddStudentVm addStudentVm)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<StudentVm> GetStudents()
         {
-            throw new NotImplementedException();
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.Active,
+                orderByPredicate: x => x.OrderBy(s => s.LastName), enableTracking: false);
+            IEnumerable<StudentVm> studentsVm = AutoMapper.Mapper.Map<IEnumerable<StudentVm>>(students);
+            return studentsVm;
         }
 
         public IEnumerable<StudentVm> GetStudentsByCourse(int courseId)
@@ -36,12 +34,44 @@ namespace EnterSchoolRegister.Services.Services
 
         public IEnumerable<StudentVm> GetStudentsByParent(int parentId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(
+                filterPredicate: s => s.ParentId == parentId && s.Active, orderByPredicate: x =>
+                x.OrderBy(s => s.LastName), enableTracking: false);
+            IEnumerable<StudentVm> studentsVm = AutoMapper.Mapper.Map<IEnumerable<StudentVm>>(students);
+            return studentsVm;
         }
 
-        public void RemoveStudent(RemoveStudentVm removeStudentVm)
+        public bool AddStudent(AddRemoveStudentVm model)
         {
-            throw new NotImplementedException();
+            var student = Mapper.Map<Student>(model);
+            var exists = UoW.Repository<Student>().Get(s => s.LastName.ToUpper().Equals(student.LastName.ToUpper()) &&
+                                                            s.FirstName.ToUpper().Equals(student.FirstName.ToUpper()) &&
+                                                            s.ParentId == student.ParentId);
+            if( exists == null )
+            {
+                student.Active = true;
+                UoW.Repository<Student>().Add(student);
+                UoW.Save();
+                return true;
+            } else if( !exists.Active )
+            {
+                student.SerialNumber = exists.SerialNumber;
+                student.Active = true;
+                UoW.Repository<Student>().AddOrUpdate(s => s.SerialNumber == student.SerialNumber, student);
+                UoW.Save();
+                return true;
+            }
+            return false;
+        }
+
+        public void RemoveStudent(AddRemoveStudentVm model)
+        {
+            var student = Mapper.Map<Student>(model);
+            student.Active = false;
+            UoW.Repository<Student>().AddOrUpdate(s => s.LastName.ToUpper().Equals(student.LastName.ToUpper()) &&
+                                                            s.FirstName.ToUpper().Equals(student.FirstName.ToUpper()) &&
+                                                            s.ParentId == student.ParentId, student);
+            UoW.Save();
         }
     }
 }
