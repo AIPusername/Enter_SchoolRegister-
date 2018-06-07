@@ -14,6 +14,7 @@
     <div class="main d-container col-md-6">
         @if (Model.Count<CourseVm>() == 0)
         {
+            <br />
             <p>There are not courses yet.</p>
         }
         else
@@ -86,7 +87,7 @@
     
         <div id="remove-course-form-container" style="margin-top: 20px">
             <hr />
-            <form id="remove-course-form">
+            <form>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="Name">Select the course which has to be removed</label>

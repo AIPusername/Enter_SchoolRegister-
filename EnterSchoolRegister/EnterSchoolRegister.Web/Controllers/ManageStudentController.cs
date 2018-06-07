@@ -35,6 +35,13 @@ namespace EnterSchoolRegister.Web.Controllers
                 return View(studentsVm);
         }
 
+        [HttpGet]
+        public IEnumerable<StudentVm> StudentsByCourse(AddRemoveCourseStudentVm model)
+        {
+            IEnumerable<StudentVm> studentsVm = _studentService.GetStudentsByCourse(model.CourseId);
+            return studentsVm;
+        }
+
         [HttpPost]
         public JsonResult AddStudent(AddRemoveStudentVm model)
         {

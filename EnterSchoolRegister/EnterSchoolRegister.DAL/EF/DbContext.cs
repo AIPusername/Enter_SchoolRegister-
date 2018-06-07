@@ -35,20 +35,6 @@ namespace EnterSchoolRegister.DAL.EF
             base.OnModelCreating(modelBuilder);
             // Fluent API commands
 
-            //CourseStudent primary and foreign keys
-            modelBuilder.Entity<CourseStudent>()
-                .HasKey(cs => new { cs.CourseId, cs.StudentSerialNumber });
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Course)
-                .WithMany(c => c.CourseStudent)
-                .HasForeignKey(cs => cs.CourseId);
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Student)
-                .WithMany(s => s.CourseStudent)
-                .HasForeignKey(cs => cs.StudentSerialNumber);
-
             //Grade keys
             modelBuilder.Entity<Grade>()
                 .HasKey(g => new { g.CourseId, g.StudentSerialNumber, g.Date });

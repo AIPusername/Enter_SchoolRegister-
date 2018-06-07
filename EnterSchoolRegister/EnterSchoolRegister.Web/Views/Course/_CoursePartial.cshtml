@@ -4,31 +4,35 @@
 @model EnterSchoolRegister.ViewModels.EntitiesViewModels.CourseVm
 @inject UserManager<User> UserManager
 
-@{ 
+@{
     ViewData["Name"] = Model.Name;
+    var idF = "";
+    @if (Model.Id < 100) { idF += 0; }
+    @if (Model.Id < 10) { idF += 0; }
+    idF += Model.Id;
 }
 
 <div class="course-box" style="margin-top: 40px; margin-bottom:40px">
     <h3>@ViewData["Name"]</h3>
     <table class="table table-striped">
-        <thead style="text-align: center;">
+        <thead>
             <tr>
-                <th>@Html.DisplayNameFor(c => c.Id)</th>
-                <th>@Html.DisplayNameFor(c => c.NumberOfECTS)</th>
-                <th>@Html.DisplayNameFor(c => c.LecturesHours)</th>
-                <th>@Html.DisplayNameFor(c => c.LaboratoriesHours)</th>
+                <th style="text-align:center">@Html.DisplayNameFor(c => c.Id)</th>
+                <th style="text-align:center">@Html.DisplayNameFor(c => c.NumberOfECTS)</th>
+                <th style="text-align:center">@Html.DisplayNameFor(c => c.LecturesHours)</th>
+                <th style="text-align:center">@Html.DisplayNameFor(c => c.LaboratoriesHours)</th>
             </tr>
         </thead>
-        <tbody style="text-align: center;">
+        <tbody style="text-align: center">
             <tr>
-                <td>@Model.Id</td>
+                <td>@idF</td>
                 <td>@Model.NumberOfECTS</td>
                 <td>@Model.LecturesHours</td>
                 <td>@Model.LaboratoriesHours</td>
             </tr>
         </tbody>
     </table>
-    @{ 
+    @{
         string email = UserManager.FindByIdAsync("" + Model.TeacherId).Result.Email;
     }
     <h5><b>Teacher's email:</b> @email</h5>

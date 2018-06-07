@@ -22,8 +22,7 @@ namespace EnterSchoolRegister.BLL.Entities
         public int ParentId { get; set; }
 
         public User Parent { get; set; }
-
-        public ICollection<CourseStudent> CourseStudent { get; set; }
+        
         public ICollection<Grade> Grades { get; set; }
 
         public bool Active { get; set; }

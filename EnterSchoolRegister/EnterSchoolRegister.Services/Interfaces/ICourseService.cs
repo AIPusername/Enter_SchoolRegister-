@@ -10,12 +10,14 @@ namespace EnterSchoolRegister.Services.Interfaces
 {
     public interface ICourseService
     {
-        IEnumerable<CourseVm> GetCourses();
         IEnumerable<CourseVm> GetCourses(int teacherId);
         bool AddCourse(AddCourseVm addCourseVm);
         void RemoveCourse(RemoveCourseVm removeCourseVm);
 
-        /*Add methods, ViewModels and anything needed to add/remove a student into a course*/
+        IEnumerable<CourseStudentVm> GetAttendances(int teacherId);
+        bool AddCourseStudent(AddRemoveCourseStudentVm model);
+        void RemoveCourseStudent(AddRemoveCourseStudentVm model);
+        bool SomeoneIsAttending(int courseId);
 
         IEnumerable<GradeVm> GetListOfGrades(int courseId, int studentId);
         void AddGrade(GradingVm addGradeVm);

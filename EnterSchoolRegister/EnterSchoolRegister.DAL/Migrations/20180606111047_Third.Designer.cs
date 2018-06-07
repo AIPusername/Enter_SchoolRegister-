@@ -12,9 +12,10 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20180606111047_Third")]
+    partial class Third
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +62,11 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CourseStudents");
+                    b.HasIndex("StudentSerialNumber");
+
+                    b.HasIndex("CourseId", "StudentSerialNumber");
+
+                    b.ToTable("CourseStudent");
                 });
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
@@ -270,6 +275,19 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.HasOne("EnterSchoolRegister.BLL.Entities.User", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
+                {
+                    b.HasOne("EnterSchoolRegister.BLL.Entities.Course", "Course")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EnterSchoolRegister.BLL.Entities.Student", "Student")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("StudentSerialNumber")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

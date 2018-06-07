@@ -14,5 +14,6 @@ namespace EnterSchoolRegister.Services.Interfaces
         IEnumerable<StudentVm> GetStudentsByCourse(int courseId);
         bool AddStudent(AddRemoveStudentVm model);
         void RemoveStudent(AddRemoveStudentVm model);
+        bool IsAttendingSomething(int studentSn);
     }
 }

@@ -30,6 +30,8 @@ namespace EnterSchoolRegister.Web.Configuration
 
                 cfg.CreateMap<AddRemoveStudentVm, Student>();
 
+                cfg.CreateMap<AddRemoveCourseStudentVm, CourseStudent>();
+
                 cfg.CreateMap<GradingVm, Grade>();
                 cfg.CreateMap<RemoveGradeVm, Grade>();
             });

@@ -8,6 +8,17 @@ namespace EnterSchoolRegister.ViewModels.EntitiesViewModels
 {
     public class StudentVm
     {
+        public StudentVm() { }
+
+        public StudentVm(int sn, string fn, string ln, int pid)
+        {
+            SerialNumber = sn;
+            FirstName = fn;
+            LastName = ln;
+            ParentId = pid;
+        }
+
+
         [Display(Name = "Serial number")]
         public int SerialNumber { get; set; }
 

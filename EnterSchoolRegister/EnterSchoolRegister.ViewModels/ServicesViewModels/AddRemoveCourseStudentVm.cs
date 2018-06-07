@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace EnterSchoolRegister.BLL.Entities
+namespace EnterSchoolRegister.ViewModels.ServicesViewModels
 {
-    public class CourseStudent
+    public class AddRemoveCourseStudentVm
     {
-        [Key]
-        public int Id { get; set; }
-
+        [JsonProperty("CourseId")]
         [Required]
         public int CourseId { get; set; }
 
+        [JsonProperty("StudentSerialNumber")]
         [Required]
         public int StudentSerialNumber { get; set; }
-
-        public bool Active { get; set; }
     }
 }

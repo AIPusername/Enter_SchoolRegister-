@@ -205,24 +205,23 @@ namespace EnterSchoolRegister.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseStudents",
+                name: "CourseStudent",
                 columns: table => new
                 {
                     CourseId = table.Column<int>(nullable: false),
-                    StudentSerialNumber = table.Column<int>(nullable: false),
-                    Active = table.Column<bool>(nullable: false)
+                    StudentSerialNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseStudents", x => new { x.CourseId, x.StudentSerialNumber });
+                    table.PrimaryKey("PK_CourseStudent", x => new { x.CourseId, x.StudentSerialNumber });
                     table.ForeignKey(
-                        name: "FK_CourseStudents_Courses_CourseId",
+                        name: "FK_CourseStudent_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseStudents_Students_StudentSerialNumber",
+                        name: "FK_CourseStudent_Students_StudentSerialNumber",
                         column: x => x.StudentSerialNumber,
                         principalTable: "Students",
                         principalColumn: "SerialNumber",
@@ -302,8 +301,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudents_StudentSerialNumber",
-                table: "CourseStudents",
+                name: "IX_CourseStudent_StudentSerialNumber",
+                table: "CourseStudent",
                 column: "StudentSerialNumber");
 
             migrationBuilder.CreateIndex(
@@ -335,7 +334,7 @@ namespace EnterSchoolRegister.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CourseStudents");
+                name: "CourseStudent");
 
             migrationBuilder.DropTable(
                 name: "Grades");

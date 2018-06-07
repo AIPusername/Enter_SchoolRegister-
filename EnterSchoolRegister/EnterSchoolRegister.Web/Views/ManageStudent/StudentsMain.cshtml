@@ -15,6 +15,7 @@
         <br />
         @if (Model.Count<StudentVm>() == 0)
         {
+            <br />
             <p>You haven't added any student yet.</p>
         }
         else
@@ -29,7 +30,7 @@
                     <tbody>
                         @foreach (var student in Model)
                         {
-                            @Html.Partial("_StudentPartial", student);
+                            @Html.Partial("_StudentPartial", student)
                         }
                     </tbody>
                 </table>
@@ -60,7 +61,7 @@
 
         <div id="add-student-form-container" style="margin-top: 20px">
             <hr />
-            <form id="addStudentForm">
+            <form>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="LastName">Last name</label>
@@ -83,17 +84,17 @@
 
         <div id="remove-student-form-container" style="margin-top: 20px">
             <hr />
-            <form id="remove-student-form">
+            <form>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="removeStudentName">Select the student who has to be removed</label>
                         <select class="form-control" id="removeStudentName">
                             @foreach (var student in Model)
                             {
-                                var str = "";
-                                @if(student.SerialNumber < 100) { str += 0; }
-                                @if(student.SerialNumber < 10) { str += 0; }
-                                <option>@str@student.SerialNumber - @student.LastName @student.FirstName</option>
+                                var snF = "";
+                                @if(student.SerialNumber < 100) { snF += 0; }
+                                @if(student.SerialNumber < 10) { snF += 0; }
+                                <option>@snF@student.SerialNumber - @student.LastName @student.FirstName</option>
                             }
                         </select>
                     </div>
@@ -106,5 +107,7 @@
             </form>
         </div>
     </div>
+
+
 </div>
 

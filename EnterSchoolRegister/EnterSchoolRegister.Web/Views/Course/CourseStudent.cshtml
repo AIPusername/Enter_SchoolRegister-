@@ -1,0 +1,181 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+@using  EnterSchoolRegister.Services.Services;
+@using Microsoft.AspNetCore.Identity
+@using EnterSchoolRegister.BLL.Entities
+
+@model IEnumerable<CourseStudentVm>
+@inject CourseService _courseService
+@inject ManageStudentService _studentService
+@inject UserManager<User> _userManager
+
+@{
+    ViewData["Title"] = "Attendances";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div id="manage-student-section" class="row">
+
+
+    <div id="lists" class="main d-container col-md-6">
+        <br />
+        @if (Model.Count<CourseStudentVm>() == 0)
+        {
+            <p>No one is attending your courses yet.</p>
+        }
+        else
+        {
+            <br />
+            int currentId = Model.ElementAt<CourseStudentVm>(0).CourseId;
+            int nextId = currentId;
+            int nextIndex = 0;
+            int n = Model.Count<CourseStudentVm>();
+            for (int i = 0; i < n; i = nextIndex)
+            {
+                string idF = "";
+                if (currentId < 100) { idF += 0; }
+                if (currentId < 10) { idF += 0; }
+                idF += currentId;
+
+                List<CourseStudentVm> partial = new List<CourseStudentVm>();
+                while(currentId == nextId && nextIndex != n)
+                {
+                    partial.Add(Model.ElementAt<CourseStudentVm>(nextIndex));
+                    nextIndex++;
+                    if(nextIndex != n)
+                    {
+                        nextId = Model.ElementAt<CourseStudentVm>(nextIndex).CourseId;
+                    }
+                }
+                currentId = nextId;
+                IOrderedEnumerable<CourseStudentVm> sorted = partial.OrderBy(cs => cs.StudentLast);
+                string courseName = Model.ElementAt<CourseStudentVm>(i).CourseName;
+                <div class="row">
+                    <div class="col-md btn-card">@idF - @courseName</div>
+                </div>
+                <div class="row">
+                    <div class="col-md" style="margin-right: 10px;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr><th>Serial number</th><th>Last name</th><th>First name</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var cs in sorted)
+                                {
+                                    @Html.Partial("_CourseStudentPartial", cs);
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <br />
+            }
+        }
+    </div>
+
+
+    <div class="main op-container col-md-6">
+
+        <div class="row justify-content-around">
+            <div class="col-md-5">
+                <button id="show-add-cs-form" type="button" class="btn btn-outline">Add new attendance</button>
+            </div>
+            @if (Model.Count<CourseStudentVm>() == 0)
+            {
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-outline" disabled>Remove an attendance</button>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-5">
+                    <button id="show-remove-cs-form" type="button" class="btn btn-outline">Remove an attendance</button>
+                </div>
+            }
+        </div>
+
+        <div id="add-cs-form-container" style="margin-top: 20px">
+            <hr />
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="csIdAdd">Select the course</label>
+                        <select class="form-control" id="csIdAdd">
+                            @foreach (var course in _courseService.GetCourses(_userManager.FindByNameAsync(User.Identity.Name).Result.Id))
+                            {
+                                string idF = "";
+                                if (course.Id < 100) { idF += 0; }
+                                if (course.Id < 10) { idF += 0; }
+                                idF += course.Id;
+                                <option>@idF - @course.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="csSnAdd">Select the student who has to be added</label>
+                        <select class="form-control" id="csSnAdd">
+                            @foreach (var student in _studentService.GetStudents())
+                            {
+                                string snF = "";
+                                if (student.SerialNumber < 100) { snF += 0; }
+                                if (student.SerialNumber < 10) { snF += 0; }
+                                snF += student.SerialNumber;
+                                string completeName = student.LastName + " " + student.FirstName;
+                                <option>@snF - @completeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <button id="add-course-student" type="button" class="btn btn-outline-small">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="remove-cs-form-container" style="margin-top: 20px">
+            <hr />
+            <form>
+                <div class="form-row justify-content-between">
+                    <div class="form-group col-md-10">
+                        <label for="csIdRemove">Select the course</label>
+                        <select class="form-control" id="csIdRemove">
+                            @foreach (var course in _courseService.GetCourses(_userManager.FindByNameAsync(User.Identity.Name).Result.Id))
+                            {
+                                if (_courseService.SomeoneIsAttending(course.Id))
+                                {
+                                    string idF = "";
+                                    if (course.Id < 100) { idF += 0; }
+                                    if (course.Id < 10) { idF += 0; }
+                                    idF += course.Id;
+                                    <option>@idF - @course.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="continue"></label>
+                        <button id="continue" type="button" class="btn btn-outline-small" style="margin-top:5px">Continue</button>
+                    </div>
+                </div>
+                <div id="addHere" class="form-row justify-content-between"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <button id="back-btn" type="button" class="btn btn-outline-small" style="margin-top:10px">Back</button>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <button id="remove-course-student" type="button" class="btn btn-outline-small" style="margin-top:10px">Remove</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+

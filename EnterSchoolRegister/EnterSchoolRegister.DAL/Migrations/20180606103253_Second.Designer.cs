@@ -12,8 +12,8 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180603131746_Initial")]
-    partial class Initial
+    [Migration("20180606103253_Second")]
+    partial class Second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,7 +61,7 @@ namespace EnterSchoolRegister.DAL.Migrations
 
                     b.HasIndex("StudentSerialNumber");
 
-                    b.ToTable("CourseStudents");
+                    b.ToTable("CourseStudent");
                 });
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
@@ -276,12 +276,12 @@ namespace EnterSchoolRegister.DAL.Migrations
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
                 {
                     b.HasOne("EnterSchoolRegister.BLL.Entities.Course", "Course")
-                        .WithMany("CourseStudent")
+                        .WithMany("CourseStudents")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EnterSchoolRegister.BLL.Entities.Student", "Student")
-                        .WithMany("CourseStudent")
+                        .WithMany("CourseStudents")
                         .HasForeignKey("StudentSerialNumber")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
