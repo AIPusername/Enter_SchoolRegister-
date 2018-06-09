@@ -12,8 +12,8 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180606103253_Second")]
-    partial class Second
+    [Migration("20180609123027_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,34 +51,41 @@ namespace EnterSchoolRegister.DAL.Migrations
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
                     b.Property<int>("CourseId");
 
                     b.Property<int>("StudentSerialNumber");
 
-                    b.Property<bool>("Active");
+                    b.HasKey("Id");
 
-                    b.HasKey("CourseId", "StudentSerialNumber");
-
-                    b.HasIndex("StudentSerialNumber");
-
-                    b.ToTable("CourseStudent");
+                    b.ToTable("CourseStudents");
                 });
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
                 {
-                    b.Property<int>("CourseId");
-
-                    b.Property<int>("StudentSerialNumber");
-
-                    b.Property<DateTime>("Date");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
 
                     b.Property<string>("Comment");
 
+                    b.Property<int>("CourseId");
+
+                    b.Property<string>("Date")
+                        .IsRequired();
+
                     b.Property<float>("Mark");
 
-                    b.HasKey("CourseId", "StudentSerialNumber", "Date");
+                    b.Property<int>("StudentSerialNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentSerialNumber");
 
@@ -270,19 +277,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.HasOne("EnterSchoolRegister.BLL.Entities.User", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.CourseStudent", b =>
-                {
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.Course", "Course")
-                        .WithMany("CourseStudents")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EnterSchoolRegister.BLL.Entities.Student", "Student")
-                        .WithMany("CourseStudents")
-                        .HasForeignKey("StudentSerialNumber")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

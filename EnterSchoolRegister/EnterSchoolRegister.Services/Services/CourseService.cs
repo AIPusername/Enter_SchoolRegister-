@@ -157,12 +157,12 @@ namespace EnterSchoolRegister.Services.Services
             throw new NotImplementedException();
         }
 
-        public void AddGrade(GradingVm addGradeVm)
+        public void AddGrade(GradingVm model)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveGrade(RemoveGradeVm removeGradeVm)
+        public void RemoveGrade(GradingVm model)
         {
             throw new NotImplementedException();
         }

@@ -8,24 +8,25 @@ namespace EnterSchoolRegister.BLL.Entities
 {
     public class Grade
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public float Mark { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         public string Comment { get; set; }
 
-        [Required]
         [ForeignKey("Course")]
+        [Required]
         public int CourseId { get; set; }
-
         public Course Course { get; set; }
 
-        [Required]
         [ForeignKey("Student")]
+        [Required]
         public int StudentSerialNumber { get; set; }
-
         public Student Student { get; set; }
 
         public bool Active { get; set; }

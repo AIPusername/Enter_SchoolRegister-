@@ -18,11 +18,17 @@ namespace EnterSchoolRegister.Services.Services
         {
         }
 
+        public StudentVm GetStudent(int studentSerialNumber)
+        {
+            Student student = UoW.Repository<Student>().Get(studentSerialNumber);
+            return Mapper.Map<StudentVm>(student);
+        }
+
         public IEnumerable<StudentVm> GetStudents()
         {
             IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.Active,
                 orderByPredicate: x => x.OrderBy(s => s.LastName), enableTracking: false);
-            IEnumerable<StudentVm> studentsVm = AutoMapper.Mapper.Map<IEnumerable<StudentVm>>(students);
+            IEnumerable<StudentVm> studentsVm = Mapper.Map<IEnumerable<StudentVm>>(students);
             return studentsVm;
         }
 

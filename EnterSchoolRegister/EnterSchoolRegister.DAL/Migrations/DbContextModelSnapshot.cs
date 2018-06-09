@@ -66,19 +66,25 @@ namespace EnterSchoolRegister.DAL.Migrations
 
             modelBuilder.Entity("EnterSchoolRegister.BLL.Entities.Grade", b =>
                 {
-                    b.Property<int>("CourseId");
-
-                    b.Property<int>("StudentSerialNumber");
-
-                    b.Property<DateTime>("Date");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
 
                     b.Property<string>("Comment");
 
+                    b.Property<int>("CourseId");
+
+                    b.Property<string>("Date")
+                        .IsRequired();
+
                     b.Property<float>("Mark");
 
-                    b.HasKey("CourseId", "StudentSerialNumber", "Date");
+                    b.Property<int>("StudentSerialNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentSerialNumber");
 

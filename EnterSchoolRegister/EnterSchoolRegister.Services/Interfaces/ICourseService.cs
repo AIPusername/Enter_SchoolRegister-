@@ -20,7 +20,7 @@ namespace EnterSchoolRegister.Services.Interfaces
         bool SomeoneIsAttending(int courseId);
 
         IEnumerable<GradeVm> GetListOfGrades(int courseId, int studentId);
-        void AddGrade(GradingVm addGradeVm);
-        void RemoveGrade(RemoveGradeVm removeGradeVm);
+        void AddGrade(GradingVm model);
+        void RemoveGrade(GradingVm model);
     }
 }

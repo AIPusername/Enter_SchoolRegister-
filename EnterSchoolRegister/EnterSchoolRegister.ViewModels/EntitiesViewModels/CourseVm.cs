@@ -11,6 +11,7 @@ namespace EnterSchoolRegister.ViewModels.EntitiesViewModels
         [Display(Name = "CourseId")]
         public int Id { get; set; }
 
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "ECTS")]
