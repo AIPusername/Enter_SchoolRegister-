@@ -28,9 +28,7 @@ namespace EnterSchoolRegister.BLL.Entities
         public int TeacherId { get; set; }
 
         public User Teacher { get; set; }
-        
-        public ICollection<Grade> Grades { get; set; }
 
-        public bool Active { get; set; }
+        public ICollection<Grade> Grades { get; } = new List<Grade>();
     }
 }

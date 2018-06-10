@@ -24,5 +24,6 @@ namespace EnterSchoolRegister.Services.Interfaces
         bool AddGrade(GradingVm model);
         void RemoveGrade(GradingVm model);
         bool SomeoneHasGrade(int courseId);
+        bool HasGrades(int courseId, int studentSn);
     }
 }

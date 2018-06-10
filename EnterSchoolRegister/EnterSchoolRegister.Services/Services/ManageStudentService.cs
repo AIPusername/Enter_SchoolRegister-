@@ -20,26 +20,24 @@ namespace EnterSchoolRegister.Services.Services
 
         public IEnumerable<StudentVm> GetStudents()
         {
-            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.Active,
-                orderByPredicate: x => x.OrderBy(s => s.LastName), enableTracking: false);
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(orderByPredicate: x => x.OrderBy(s => s.LastName), enableTracking: false);
             IEnumerable<StudentVm> studentsVm = Mapper.Map<IEnumerable<StudentVm>>(students);
             return studentsVm;
         }
 
         public IEnumerable<StudentVm> GetStudentsByParent(int parentId)
         {
-            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(
-                filterPredicate: s => s.ParentId == parentId && s.Active, orderByPredicate: x =>
-                x.OrderBy(s => s.LastName), enableTracking: false);
-            IEnumerable<StudentVm> studentsVm = AutoMapper.Mapper.Map<IEnumerable<StudentVm>>(students);
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.ParentId == parentId, orderByPredicate: x =>
+                                                                               x.OrderBy(s => s.LastName), enableTracking: false);
+            IEnumerable<StudentVm> studentsVm = Mapper.Map<IEnumerable<StudentVm>>(students);
             return studentsVm;
         }
 
         public IEnumerable<StudentVm> GetStudentsByCourse(int courseId)
         {
-            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.Active, enableTracking: false);
-            IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs =>
-                                                        cs.CourseId == courseId && cs.Active, enableTracking: false);
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(enableTracking: false);
+            IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs => cs.CourseId == courseId, enableTracking: false);
+
             var join =
                 from cs in attendances
                 join s in students on cs.StudentSerialNumber equals s.SerialNumber
@@ -84,15 +82,7 @@ namespace EnterSchoolRegister.Services.Services
                                                             s.ParentId == student.ParentId);
             if( exists == null )
             {
-                student.Active = true;
                 UoW.Repository<Student>().Add(student);
-                UoW.Save();
-                return true;
-            } else if( !exists.Active )
-            {
-                student.SerialNumber = exists.SerialNumber;
-                student.Active = true;
-                UoW.Repository<Student>().AddOrUpdate(s => s.SerialNumber == student.SerialNumber, student);
                 UoW.Save();
                 return true;
             }
@@ -105,56 +95,50 @@ namespace EnterSchoolRegister.Services.Services
             var student = UoW.Repository<Student>().Get(s => s.LastName.ToUpper().Equals(partial.LastName.ToUpper()) &&
                                                             s.FirstName.ToUpper().Equals(partial.FirstName.ToUpper()) &&
                                                             s.ParentId == partial.ParentId);
-            student.Active = false;
             if(IsAttendingSomething(student.SerialNumber))
             {
                 IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs =>
-                                                            cs.StudentSerialNumber == student.SerialNumber && cs.Active, enableTracking: false);
+                                                            cs.StudentSerialNumber == student.SerialNumber, enableTracking: false);
 
                 foreach (var cS in attendances)
                 {
-                    cS.Active = false;
-                    UoW.Repository<CourseStudent>().AddOrUpdate(cs => cs.Id == cS.Id, cS);
                     if(HasAnyGrade(cS.CourseId, student.SerialNumber))
                     {
                         IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: gr => gr.CourseId == cS.CourseId &&
-                                                                gr.StudentSerialNumber == student.SerialNumber && gr.Active);
-                        int count = grades.Count();
+                                                                        gr.StudentSerialNumber == student.SerialNumber);
                         foreach (var g in grades)
                         {
-                            g.Active = false;
-                            UoW.Repository<Grade>().AddOrUpdate(gr => gr.Id == g.Id, g);
+                            UoW.Repository<Grade>().Delete(g);
                         }
                     }
+                    UoW.Repository<CourseStudent>().Delete(cS);
                 }
             }
-            UoW.Repository<Student>().AddOrUpdate(s => s.SerialNumber == student.SerialNumber, student);
+            UoW.Repository<Student>().Delete(student);
             UoW.Save();
         }
 
 
         public bool IsAttendingSomething(int studentSn)
         {
-            IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs =>
-                                    cs.StudentSerialNumber == studentSn && cs.Active, enableTracking: false);
+            IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: 
+                                                     cs => cs.StudentSerialNumber == studentSn, enableTracking: false);
             return attendances.Any();
         }
 
         public bool HasAnyGrade(int courseId, int studentSn)
         {
             IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: g =>
-                                    g.CourseId == courseId && g.StudentSerialNumber == studentSn &&
-                                    g.Active, enableTracking: false);
+                                    g.CourseId == courseId && g.StudentSerialNumber == studentSn, enableTracking: false);
             int count = grades.Count();
             return count != 0;
         }
 
         public IEnumerable<GradeVm> Status(int parentId)
         {
-            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(
-                filterPredicate: s => s.ParentId == parentId && s.Active, enableTracking: false);
-            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active, enableTracking: false);
-            IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: g => g.Active, enableTracking: false);
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.ParentId == parentId, enableTracking: false);
+            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(enableTracking: false);
+            IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(enableTracking: false);
 
             var partial =
                 from gr in grades
@@ -195,7 +179,7 @@ namespace EnterSchoolRegister.Services.Services
 
         public IEnumerable<CourseVm> Courses()
         {
-            IEnumerable<Course> partial = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active, enableTracking: false);
+            IEnumerable<Course> partial = UoW.Repository<Course>().GetRange(enableTracking: false);
             IEnumerable<CourseVm> courses = Mapper.Map<IEnumerable<CourseVm>>(partial);
             return courses.OrderBy(c => c.Name);
         }

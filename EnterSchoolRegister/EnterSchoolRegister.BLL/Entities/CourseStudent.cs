@@ -16,7 +16,5 @@ namespace EnterSchoolRegister.BLL.Entities
 
         [Required]
         public int StudentSerialNumber { get; set; }
-
-        public bool Active { get; set; }
     }
 }

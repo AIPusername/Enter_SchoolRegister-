@@ -12,7 +12,7 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180609214952_Initial")]
+    [Migration("20180610203519_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
 
                     b.Property<string>("Description");
 
@@ -54,8 +52,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Active");
-
                     b.Property<int>("CourseId");
 
                     b.Property<int>("StudentSerialNumber");
@@ -69,8 +65,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
 
                     b.Property<string>("Comment");
 
@@ -121,8 +115,6 @@ namespace EnterSchoolRegister.DAL.Migrations
                 {
                     b.Property<int>("SerialNumber")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
 
                     b.Property<string>("FirstName")
                         .IsRequired();
