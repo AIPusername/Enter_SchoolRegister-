@@ -18,12 +18,13 @@ namespace EnterSchoolRegister.ViewModels.ServicesViewModels
 
         [JsonProperty("Mark")]
         [Required]
-        public float Mark { get; set; }
+        public string Mark { get; set; }
 
         [JsonProperty("Date")]
         [Required]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
+        [JsonProperty("Comment")]
         public string Comment { get; set; }
     }
 }

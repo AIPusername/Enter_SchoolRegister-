@@ -78,7 +78,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<string>("Date")
                         .IsRequired();
 
-                    b.Property<float>("Mark");
+                    b.Property<string>("Mark")
+                        .IsRequired();
 
                     b.Property<int>("StudentSerialNumber");
 

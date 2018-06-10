@@ -22,7 +22,6 @@ namespace EnterSchoolRegister.Web.Configuration
                 // Basic
                 cfg.CreateMap<Course, CourseVm>();
                 cfg.CreateMap<Student, StudentVm>();
-                cfg.CreateMap<Grade, GradeVm>();
 
                 //Services maps
                 cfg.CreateMap<AddCourseVm, Course>();

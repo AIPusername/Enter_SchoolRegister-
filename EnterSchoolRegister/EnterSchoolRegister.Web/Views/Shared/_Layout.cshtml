@@ -38,21 +38,21 @@
                     {
                         if (UserManager.FindByNameAsync(User.Identity.Name).Result.Role == true)
                         {
-                            //Complete other controllers
                             <li><a asp-area="" asp-controller="Course" asp-action="CoursesMain">Courses</a></li>
                             <li><a asp-area="" asp-controller="Course" asp-action="CourseStudent">Attendances</a></li>
-                            <li><a asp-area="" asp-controller="" asp-action="">Grade a student</a></li>
+                            <li><a asp-area="" asp-controller="Course" asp-action="GradeMain">Grade a student</a></li>
                         }
                         else
                         {
-                            <li><a asp-area="" asp-controller="ManageStudent" asp-action="StudentsMain">
-                                Manage students
-                                </a></li>
+                            <li>
+                                <a asp-area="" asp-controller="ManageStudent" asp-action="StudentsMain">
+                                    Manage students
+                                </a>
+                            </li>
                             <li><a asp-area="" asp-controller="" asp-action="">Students status</a></li>
                         }
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

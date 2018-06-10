@@ -12,7 +12,7 @@ namespace EnterSchoolRegister.BLL.Entities
         public int Id { get; set; }
 
         [Required]
-        public float Mark { get; set; }
+        public string Mark { get; set; }
 
         [Required]
         public string Date { get; set; }

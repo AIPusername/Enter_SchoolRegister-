@@ -18,12 +18,6 @@ namespace EnterSchoolRegister.Services.Services
         {
         }
 
-        public StudentVm GetStudent(int studentSerialNumber)
-        {
-            Student student = UoW.Repository<Student>().Get(studentSerialNumber);
-            return Mapper.Map<StudentVm>(student);
-        }
-
         public IEnumerable<StudentVm> GetStudents()
         {
             IEnumerable<Student> students = UoW.Repository<Student>().GetRange(filterPredicate: s => s.Active,
@@ -66,6 +60,22 @@ namespace EnterSchoolRegister.Services.Services
             return studentsVm.OrderBy(s => s.LastName);
         }
 
+        public IEnumerable<StudentVm> GetStudentsByGrade(int courseId)
+        {
+            IEnumerable<StudentVm> partial = GetStudentsByCourse(courseId);
+
+            List<StudentVm> students = new List<StudentVm>();
+            foreach(var student in partial)
+            {
+                if(HasAnyGrade(courseId, student.SerialNumber))
+                {
+                    students.Add(student);
+                }
+            }
+
+            return students.OrderBy(s => s.LastName);
+        }
+
         public bool AddStudent(AddRemoveStudentVm model)
         {
             var student = Mapper.Map<Student>(model);
@@ -105,20 +115,38 @@ namespace EnterSchoolRegister.Services.Services
                 {
                     cS.Active = false;
                     UoW.Repository<CourseStudent>().AddOrUpdate(cs => cs.Id == cS.Id, cS);
+                    if(HasAnyGrade(cS.CourseId, student.SerialNumber))
+                    {
+                        IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: gr => gr.CourseId == cS.CourseId &&
+                                                                gr.StudentSerialNumber == student.SerialNumber && gr.Active);
+                        int count = grades.Count();
+                        foreach (var g in grades)
+                        {
+                            g.Active = false;
+                            UoW.Repository<Grade>().AddOrUpdate(gr => gr.Id == g.Id, g);
+                        }
+                    }
                 }
             }
-            UoW.Repository<Student>().AddOrUpdate(s => s.LastName.ToUpper().Equals(student.LastName.ToUpper()) &&
-                                                            s.FirstName.ToUpper().Equals(student.FirstName.ToUpper()) &&
-                                                            s.ParentId == student.ParentId, student);
+            UoW.Repository<Student>().AddOrUpdate(s => s.SerialNumber == student.SerialNumber, student);
             UoW.Save();
         }
 
 
         public bool IsAttendingSomething(int studentSn)
         {
-            var attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs =>
+            IEnumerable<CourseStudent> attendances = UoW.Repository<CourseStudent>().GetRange(filterPredicate: cs =>
                                     cs.StudentSerialNumber == studentSn && cs.Active, enableTracking: false);
-            return attendances.Count<CourseStudent>() != 0;
+            return attendances.Any();
+        }
+
+        public bool HasAnyGrade(int courseId, int studentSn)
+        {
+            IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: g =>
+                                    g.CourseId == courseId && g.StudentSerialNumber == studentSn &&
+                                    g.Active, enableTracking: false);
+            int count = grades.Count();
+            return count != 0;
         }
     }
 }

@@ -9,12 +9,13 @@ namespace EnterSchoolRegister.Services.Interfaces
 {
     public interface IManageStudentService
     {
-        StudentVm GetStudent(int studentSerialNumber);
         IEnumerable<StudentVm> GetStudents();
         IEnumerable<StudentVm> GetStudentsByParent(int parentId);
         IEnumerable<StudentVm> GetStudentsByCourse(int courseId);
+        IEnumerable<StudentVm> GetStudentsByGrade(int courseId);
         bool AddStudent(AddRemoveStudentVm model);
         void RemoveStudent(AddRemoveStudentVm model);
         bool IsAttendingSomething(int studentSn);
+        bool HasAnyGrade(int courseId, int studentSn);
     }
 }

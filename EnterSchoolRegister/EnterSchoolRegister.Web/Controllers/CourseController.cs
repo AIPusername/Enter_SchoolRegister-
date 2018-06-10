@@ -77,5 +77,36 @@ namespace EnterSchoolRegister.Web.Controllers
             _courseService.RemoveCourseStudent(model);
             return Json(new { success = true });
         }
+
+        public IActionResult GradeMain()
+        {
+            IEnumerable<GradeVm> gradeVm = _courseService.GetListOfGrades(_userManager
+               .FindByNameAsync(HttpContext.User.Identity.Name).Result.Id);
+            if (HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest")
+                return PartialView(gradeVm);
+            else
+                return View(gradeVm);
+        }
+
+        [HttpGet]
+        public IEnumerable<GradeVm> ListOfGrades(AddRemoveCourseStudentVm model)
+        {
+            IEnumerable<GradeVm> gradesVm = _courseService.GetListOfGrades(model.CourseId, model.StudentSerialNumber);
+            return gradesVm;
+        }
+
+        [HttpPost]
+        public JsonResult Grade(GradingVm model)
+        {
+            bool added = _courseService.AddGrade(model);
+            return Json(new { success = added });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveGrade(GradingVm model)
+        {
+            _courseService.RemoveGrade(model);
+            return Json(new { success = true });
+        }
     }
 }

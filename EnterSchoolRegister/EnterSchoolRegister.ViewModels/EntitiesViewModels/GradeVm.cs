@@ -7,8 +7,20 @@ namespace EnterSchoolRegister.ViewModels.EntitiesViewModels
 {
     public class GradeVm
     {
+        public GradeVm(string m, string d, string c, int cid, string cn, int ssn, string sl, string sf)
+        {
+            Mark = m;
+            Date = d;
+            Comment = c;
+            CourseId = cid;
+            CourseName = cn;
+            StudentSerialNumber = ssn;
+            StudentLast = sl;
+            StudentFirst = sf;
+        }
+
         [Display(Name = "Mark")]
-        public float Mark { get; set; }
+        public string Mark { get; set; }
 
         [Display(Name = "Date")]
         public string Date { get; set; }

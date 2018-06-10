@@ -1,0 +1,15 @@
+﻿@model EnterSchoolRegister.ViewModels.EntitiesViewModels.GradeVm
+
+@{
+    var serialNumberF = "";
+    @if (Model.StudentSerialNumber < 100) { serialNumberF += 0; }
+    @if (Model.StudentSerialNumber < 10) { serialNumberF += 0; }
+    serialNumberF += Model.StudentSerialNumber;
+}
+
+<tr>
+    <td>@serialNumberF</td>
+    <td>@Html.DisplayFor(cs => cs.Date)</td>
+    <td>@Html.DisplayFor(cs => cs.Mark)</td>
+    <td>@Html.DisplayFor(cs => cs.Comment)</td>
+</tr>

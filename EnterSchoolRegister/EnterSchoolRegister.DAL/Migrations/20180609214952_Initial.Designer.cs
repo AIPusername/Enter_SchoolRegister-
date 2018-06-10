@@ -12,7 +12,7 @@ using System;
 namespace EnterSchoolRegister.DAL.Migrations
 {
     [DbContext(typeof(DbContext<User, Role, int>))]
-    [Migration("20180609123027_Initial")]
+    [Migration("20180609214952_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,8 @@ namespace EnterSchoolRegister.DAL.Migrations
                     b.Property<string>("Date")
                         .IsRequired();
 
-                    b.Property<float>("Mark");
+                    b.Property<string>("Mark")
+                        .IsRequired();
 
                     b.Property<int>("StudentSerialNumber");
 

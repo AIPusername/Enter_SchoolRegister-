@@ -229,7 +229,7 @@ namespace EnterSchoolRegister.DAL.Migrations
                     Comment = table.Column<string>(nullable: true),
                     CourseId = table.Column<int>(nullable: false),
                     Date = table.Column<string>(nullable: false),
-                    Mark = table.Column<float>(nullable: false),
+                    Mark = table.Column<string>(nullable: false),
                     StudentSerialNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

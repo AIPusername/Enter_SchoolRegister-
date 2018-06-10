@@ -1,0 +1,222 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+@using  EnterSchoolRegister.Services.Services;
+@using Microsoft.AspNetCore.Identity
+@using EnterSchoolRegister.BLL.Entities
+
+@model IEnumerable<GradeVm>
+@inject CourseService _courseService
+@inject ManageStudentService _studentService
+@inject UserManager<User> _userManager
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div id="manage-student-section" class="row">
+
+
+    <div id="lists" class="main d-container col-md-6">
+        <br />
+        @if (!Model.Any())
+        {
+            <p>No one is graded in your courses yet.</p>
+        }
+        else
+        {
+            <br />
+            int currentId = Model.ElementAt<GradeVm>(0).CourseId;
+            int nextId = currentId;
+            int nextIndex = 0;
+            int n = Model.Count<GradeVm>();
+            for (int i = 0; i < n; i = nextIndex)
+            {
+                string idF = "";
+                if (currentId < 100) { idF += 0; }
+                if (currentId < 10) { idF += 0; }
+                idF += currentId;
+
+                List<GradeVm> partial = new List<GradeVm>();
+                while (currentId == nextId && nextIndex != n)
+                {
+                    partial.Add(Model.ElementAt<GradeVm>(nextIndex));
+                    nextIndex++;
+                    if (nextIndex != n)
+                    {
+                        nextId = Model.ElementAt<GradeVm>(nextIndex).CourseId;
+                    }
+                }
+                currentId = nextId;
+                IOrderedEnumerable<GradeVm> sorted = partial.OrderBy(g => g.StudentLast);
+                string courseName = Model.ElementAt<GradeVm>(i).CourseName;
+                <div class="row">
+                    <div class="col-md btn-card">@idF - @courseName</div>
+                </div>
+                <div class="row">
+                    <div class="col-md" style="margin-right: 10px;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr><th>Serial number</th><th>Date</th><th>Mark</th><th>Comment</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    List<int> alreadyDisplayed = new List<int>();
+                                    foreach (var s in sorted)
+                                    {
+                                        if (!alreadyDisplayed.Contains(s.StudentSerialNumber))
+                                        {
+
+                                            alreadyDisplayed.Add(s.StudentSerialNumber);
+                                            List<GradeVm> almost = new List<GradeVm>();
+                                            foreach (var st in sorted)
+                                            {
+                                                if (st.StudentSerialNumber == s.StudentSerialNumber)
+                                                {
+                                                    almost.Add(st);
+                                                }
+                                            }
+
+                                            foreach (var g in almost.OrderBy(gr => gr.Date))
+                                            {
+                                                @Html.Partial("_GradePartial", g);
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <br />
+            }
+        }
+    </div>
+
+
+    <div class="main op-container col-md-6">
+
+        <div class="row justify-content-around">
+            <div class="col-md-5">
+                <button id="show-add-grade-form" type="button" class="btn btn-outline">Add new grade</button>
+            </div>
+            @if (!Model.Any())
+            {
+                <div class="col-md-5">
+                    <button type="button" class="btn btn-outline" disabled>Remove a grade</button>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-5">
+                    <button id="show-remove-grade-form" type="button" class="btn btn-outline">Remove a grade</button>
+                </div>
+            }
+        </div>
+
+        <div id="add-grade-form-container" style="margin-top: 20px">
+            <hr />
+            <form id="addGradeForm">
+                <div class="form-row justify-content-between">
+                    <div class="form-group col-md-10">
+                        <label for="gradeIdAdd">Select the course</label>
+                        <select class="form-control" id="gradeIdAdd">
+                            @foreach (var course in _courseService.GetCourses(_userManager.FindByNameAsync(User.Identity.Name).Result.Id))
+                            {
+                                if (_courseService.SomeoneIsAttending(course.Id))
+                                {
+                                    string idF = "";
+                                    if (course.Id < 100) { idF += 0; }
+                                    if (course.Id < 10) { idF += 0; }
+                                    idF += course.Id;
+                                    <option>@idF - @course.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="continueAddGrade"></label>
+                        <button id="continueAddGrade" type="button" class="btn btn-outline-small" style="margin-top:5px">Continue</button>
+                    </div>
+                </div>
+                <div id="addStudentsHere" class="form-row justify-content-between"></div>
+                <div id="fields-container">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Date">Enter the date of the exam</label>
+                            <input id="Date" type="date" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Mark">Type a mark</label>
+                            <input id="Mark" type="number" min="0" max="5" step="0.1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="Comment">Type comment about the grade</label>
+                            <textarea class="form-control" id="Comment" maxlength="150" placeholder="Type here a comment."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <button id="back-btn-grade" type="button" class="btn btn-outline-small" style="margin-top:10px">Back</button>
+                        </div>
+                        <div class="form-group col-md-9">
+                            <button id="add-grade" type="button" class="btn btn-outline-small" style="margin-top:10px">Add grade</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="remove-grade-form-container" style="margin-top: 20px">
+            <hr />
+            <form>
+                <div class="form-row justify-content-between">
+                    <div class="form-group col-md-10">
+                        <label for="gradeIdRemove">Select the course</label>
+                        <select class="form-control" id="gradeIdRemove">
+                            @foreach (var course in _courseService.GetCourses(_userManager.FindByNameAsync(User.Identity.Name).Result.Id))
+                            {
+                                if (_courseService.SomeoneHasGrade(course.Id))
+                                {
+                                    string idF = "";
+                                    if (course.Id < 100) { idF += 0; }
+                                    if (course.Id < 10) { idF += 0; }
+                                    idF += course.Id;
+                                    <option>@idF - @course.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="continueStudent"></label>
+                        <button id="continueStudent" type="button" class="btn btn-outline-small" style="margin-top:5px">Continue</button>
+                    </div>
+                </div>
+                <div id="removeStudentsHere" class="form-row justify-content-between"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <button id="backStudent" type="button" class="btn btn-outline-small" style="margin-top:10px">Back</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button id="continueGrades" type="button" class="btn btn-outline-small" style="margin-top:10px">Continue</button>
+                    </div>
+                </div>
+                <div id="removeGradesHere" class="form-row justify-content-between"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <button id="backGrade" type="button" class="btn btn-outline-small" style="margin-top:10px">Back</button>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <button id="remove-grade" type="button" class="btn btn-outline-small" style="margin-top:10px">Remove grade</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+

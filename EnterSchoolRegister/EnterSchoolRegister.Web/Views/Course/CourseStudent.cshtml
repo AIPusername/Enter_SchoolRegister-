@@ -19,7 +19,7 @@
 
     <div id="lists" class="main d-container col-md-6">
         <br />
-        @if (Model.Count<CourseStudentVm>() == 0)
+        @if (!Model.Any())
         {
             <p>No one is attending your courses yet.</p>
         }
@@ -82,7 +82,7 @@
             <div class="col-md-5">
                 <button id="show-add-cs-form" type="button" class="btn btn-outline">Add new attendance</button>
             </div>
-            @if (Model.Count<CourseStudentVm>() == 0)
+            @if (!Model.Any())
             {
                 <div class="col-md-5">
                     <button type="button" class="btn btn-outline" disabled>Remove an attendance</button>
