@@ -148,5 +148,56 @@ namespace EnterSchoolRegister.Services.Services
             int count = grades.Count();
             return count != 0;
         }
+
+        public IEnumerable<GradeVm> Status(int parentId)
+        {
+            IEnumerable<Student> students = UoW.Repository<Student>().GetRange(
+                filterPredicate: s => s.ParentId == parentId && s.Active, enableTracking: false);
+            IEnumerable<Course> courses = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active, enableTracking: false);
+            IEnumerable<Grade> grades = UoW.Repository<Grade>().GetRange(filterPredicate: g => g.Active, enableTracking: false);
+
+            var partial =
+                from gr in grades
+                join st in students on gr.StudentSerialNumber equals st.SerialNumber
+                select new
+                {
+                    Mark = gr.Mark,
+                    Date = gr.Date,
+                    Comment = gr.Comment,
+                    CourseId = gr.CourseId,
+                    StudentSerialNumber = st.SerialNumber,
+                    StudentLast = st.LastName,
+                    StudentFirst = st.FirstName
+                };
+
+            var join =
+                from p in partial
+                join c in courses on p.CourseId equals c.Id
+                select new
+                {
+                    Mark = p.Mark,
+                    Date = p.Date,
+                    Comment = p.Comment,
+                    CourseId = c.Id,
+                    CourseName = c.Name,
+                    StudentSerialNumber = p.StudentSerialNumber,
+                    StudentLast = p.StudentLast,
+                    StudentFirst = p.StudentFirst
+                };
+
+            List<GradeVm> list = new List<GradeVm>();
+            foreach(var raw in join)
+            {
+                list.Add(new GradeVm(raw.Mark, raw.Date, raw.Comment, raw.CourseId, raw.CourseName, raw.StudentSerialNumber, raw.StudentLast, raw.StudentFirst));
+            }
+            return list.OrderBy(g => g.StudentLast);
+        }
+
+        public IEnumerable<CourseVm> Courses()
+        {
+            IEnumerable<Course> partial = UoW.Repository<Course>().GetRange(filterPredicate: c => c.Active, enableTracking: false);
+            IEnumerable<CourseVm> courses = Mapper.Map<IEnumerable<CourseVm>>(partial);
+            return courses.OrderBy(c => c.Name);
+        }
     }
 }

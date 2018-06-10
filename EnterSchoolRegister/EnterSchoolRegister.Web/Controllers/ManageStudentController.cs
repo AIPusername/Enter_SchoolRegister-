@@ -66,5 +66,24 @@ namespace EnterSchoolRegister.Web.Controllers
             _studentService.RemoveStudent(model);
             return Json(new { success = true });
         }
+
+        public IActionResult StudentsStatus()
+        {
+            IEnumerable<GradeVm> gradesVm = _studentService.Status(_userManager
+                .FindByNameAsync(HttpContext.User.Identity.Name).Result.Id);
+            if (HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest")
+                return PartialView(gradesVm);
+            else
+                return View(gradesVm);
+        }
+
+        public IActionResult Courses()
+        {
+            IEnumerable<CourseVm> coursesVm = _studentService.Courses();
+            if (HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest")
+                return PartialView(coursesVm);
+            else
+                return View(coursesVm);
+        }
     }
 }

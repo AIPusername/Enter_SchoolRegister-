@@ -12,7 +12,7 @@
     ViewData["Title"] = "Grades";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 
 <div id="manage-student-section" class="row">
 
@@ -21,7 +21,7 @@
         <br />
         @if (!Model.Any())
         {
-            <p>No one is graded in your courses yet.</p>
+            <p>No one has been graded in your courses yet.</p>
         }
         else
         {

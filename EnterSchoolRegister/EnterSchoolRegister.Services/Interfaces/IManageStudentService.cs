@@ -17,5 +17,8 @@ namespace EnterSchoolRegister.Services.Interfaces
         void RemoveStudent(AddRemoveStudentVm model);
         bool IsAttendingSomething(int studentSn);
         bool HasAnyGrade(int courseId, int studentSn);
+
+        IEnumerable<GradeVm> Status(int parentId);
+        IEnumerable<CourseVm> Courses();
     }
 }

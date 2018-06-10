@@ -1,0 +1,28 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+
+@model IEnumerable<CourseVm>
+
+@{
+    ViewData["Title"] = "Courses on the platform";
+}
+
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<div style="width: 1000px; border-left: 2px solid darkgrey; border-right: 2px solid darkgrey; margin: auto">
+    <div style="width: 600px; margin: auto">
+        @if (!Model.Any())
+        {
+            <br />
+            <p>There are not courses yet.</p>
+        }
+        else
+        {
+            @foreach (var course in Model)
+            {
+                @Html.Partial("_CoursePartial", course);
+                <hr />
+            }
+        }
+    </div>
+</div>
+

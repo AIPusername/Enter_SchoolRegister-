@@ -1,0 +1,15 @@
+﻿@model EnterSchoolRegister.ViewModels.EntitiesViewModels.GradeVm
+
+@{
+    var idF = "";
+    @if (Model.CourseId < 100) { idF += 0; }
+    @if (Model.CourseId < 10) { idF += 0; }
+    idF += Model.CourseId;
+}
+
+<tr>
+    <td>@idF</td>
+    <td>@Html.DisplayFor(cs => cs.Date)</td>
+    <td>@Html.DisplayFor(cs => cs.Mark)</td>
+    <td>@Html.DisplayFor(cs => cs.Comment)</td>
+</tr>

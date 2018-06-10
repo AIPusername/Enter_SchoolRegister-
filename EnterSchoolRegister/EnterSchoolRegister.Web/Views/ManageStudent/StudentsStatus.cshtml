@@ -1,0 +1,88 @@
+﻿@using EnterSchoolRegister.ViewModels.EntitiesViewModels;
+
+@model IEnumerable<GradeVm>
+
+@{
+    ViewData["Title"] = "Students Status";
+}
+
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<div style="width: 1000px; border-left: 2px solid darkgrey; border-right: 2px solid darkgrey; margin: auto">
+    <div style="width: 600px; margin: auto">
+        @if (!Model.Any())
+        {
+            <p>No one has been graded yet.</p>
+        }
+        else
+        {
+            <br />
+            int currentSn = Model.ElementAt<GradeVm>(0).StudentSerialNumber;
+            int nextSn = currentSn;
+            int nextIndex = 0;
+            int n = Model.Count<GradeVm>();
+            for (int i = 0; i < n; i = nextIndex)
+            {
+                string snF = "";
+                if (currentSn < 100) { snF += 0; }
+                if (currentSn < 10) { snF += 0; }
+                snF += currentSn;
+
+                List<GradeVm> partial = new List<GradeVm>();
+                while (currentSn == nextSn && nextIndex != n)
+                {
+                    partial.Add(Model.ElementAt<GradeVm>(nextIndex));
+                    nextIndex++;
+                    if (nextIndex != n)
+                    {
+                        nextSn = Model.ElementAt<GradeVm>(nextIndex).StudentSerialNumber;
+                    }
+                }
+                currentSn = nextSn;
+                IOrderedEnumerable<GradeVm> sorted = partial.OrderBy(g => g.CourseName);
+                string completeName = Model.ElementAt<GradeVm>(i).StudentLast + " " + Model.ElementAt<GradeVm>(i).StudentFirst;
+                <div class="row">
+                    <div class="col-md btn-card">@snF - @completeName</div>
+                </div>
+                <div class="row">
+                    <div class="col-md" style="margin-right: 10px;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr><th>CourseId</th><th>Date</th><th>Mark</th><th>Comment</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    List<int> alreadyDisplayed = new List<int>();
+                                    foreach (var s in sorted)
+                                    {
+                                        if (!alreadyDisplayed.Contains(s.CourseId))
+                                        {
+
+                                            alreadyDisplayed.Add(s.CourseId);
+                                            List<GradeVm> almost = new List<GradeVm>();
+                                            foreach (var c in sorted)
+                                            {
+                                                if (s.CourseId == c.CourseId)
+                                                {
+                                                    almost.Add(c);
+                                                }
+                                            }
+
+                                            foreach (var g in almost.OrderBy(gr => gr.Date))
+                                            {
+                                                @Html.Partial("_GradePartial", g);
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <br />
+            }
+        }
+    </div>
+</div>
+
